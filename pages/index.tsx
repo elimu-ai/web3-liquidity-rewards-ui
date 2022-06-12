@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
 export default function Home() {
   return (
@@ -7,6 +9,8 @@ export default function Home() {
         <title>Liquidity Provider Rewards | elimu.ai</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Header />
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <h1 className="text-6xl font-bold">
@@ -89,9 +93,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="flex items-center justify-center w-full h-24 border-t mt-10">
-        Made with 💜 by&nbsp;<a href="https://eng.elimu.ai" className="text-purple-600">elimu.ai</a>
-      </footer>
+      <Footer />
     </div>
   )
 }

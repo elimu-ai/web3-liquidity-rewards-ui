@@ -21,7 +21,7 @@ export default function Home() {
         </h1>
 
         <p className="mt-3 text-2xl">
-          Get started by connecting your wallet
+          Get started by connecting your Ethereum wallet
         </p>
 
         <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">

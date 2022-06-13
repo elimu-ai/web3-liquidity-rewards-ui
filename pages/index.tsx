@@ -3,25 +3,36 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { createClient, WagmiConfig, useContractRead } from 'wagmi'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
+import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 
 const client = createClient()
 
-function LiquidityPool() {
+function LiquidityPool({ poolName }: any) {
   console.log('LiquidityPool')
   return (
     <WagmiConfig client={client}>
-      <LiquidityPoolDetails />
+      <LiquidityPoolDetails poolName={poolName} />
     </WagmiConfig>
   )
 }
 
-function LiquidityPoolDetails() {
+function LiquidityPoolDetails({ poolName }: any) {
   console.log('LiquidityPoolDetails')
+
+  let addressOrName: string = ''
+  let contractInterface: any
+  if (poolName == 'uniswap') {
+    addressOrName = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61'
+    contractInterface = UniswapV2Pair.abi
+  } else if (poolName = 'sushiswap') {
+    addressOrName = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A'
+    contractInterface = SushiSwapLPToken.abi
+  }
 
   const { data: reserves } = useContractRead(
     {
-      addressOrName: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-      contractInterface: UniswapV2Pair.abi
+      addressOrName: addressOrName,
+      contractInterface: contractInterface
     },
     'getReserves'
   )
@@ -35,7 +46,7 @@ function LiquidityPoolDetails() {
 
   return(
     <p className="mt-2">
-      TVL: {ethReserve} <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+      TVL: {ethReserve} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
     </p>
   )
 }
@@ -68,12 +79,12 @@ export default function Home() {
             <a href="/uniswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 50%/50%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <LiquidityPool />
+              <LiquidityPool poolName='uniswap' />
             </a>
             <a href="/uniswap">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>
@@ -84,14 +95,12 @@ export default function Home() {
             <a href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 50%/50%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool poolName='sushiswap' />
             </a>
             <a href="/sushiswap">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SLP pool tokens</button>
@@ -102,7 +111,7 @@ export default function Home() {
             <a href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 20%/80%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 20%/80%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day

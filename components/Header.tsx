@@ -11,21 +11,25 @@ function Wallet() {
   )
 }
 
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
 function Profile() {
-  const { data } = useAccount()
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  })
+  const { connect } = useConnect({connector: new InjectedConnector()})
+  const { data: account } = useAccount()
+  const { data: ensName } = useEnsName({address: account?.address})
   const { disconnect } = useDisconnect()
 
-  if (data) {
-    const addressShortened = `${data.address?.substring(0, 6)}...${data.address?.substring(38, 42)}`
+  const address = account?.address
+  if (address != undefined) {
+    const addressShortened : string = `${address.substring(0, 6)}...${address.substring(38, 42)}`
+    let addressOrEnsName = addressShortened
+    if (ensName != undefined) {
+      addressOrEnsName = ensName
+    }
     return (
       <div>
-        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">{addressShortened}</button>
+        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">{addressOrEnsName}</button>
       </div>
     )
   }

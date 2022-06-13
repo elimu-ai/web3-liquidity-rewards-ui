@@ -15,6 +15,7 @@ import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
 function Profile() {
+  console.log('Profile')
   const { connect } = useConnect({connector: new InjectedConnector()})
   const { data: account } = useAccount()
   const { data: ensName } = useEnsName({address: account?.address})
@@ -37,6 +38,7 @@ function Profile() {
 }
 
 export default function Header() {
+  console.log('Header')
   return (
     <>
       <header className="flex items-center justify-center w-full h-22 border-b mb-10 p-4">

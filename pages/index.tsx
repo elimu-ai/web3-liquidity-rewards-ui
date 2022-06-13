@@ -1,8 +1,47 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import { createClient, WagmiConfig, useContractRead } from 'wagmi'
+import UniswapV2Pair from '../abis/UniswapV2Pair.json'
+
+const client = createClient()
+
+function LiquidityPool() {
+  console.log('LiquidityPool')
+  return (
+    <WagmiConfig client={client}>
+      <LiquidityPoolDetails />
+    </WagmiConfig>
+  )
+}
+
+function LiquidityPoolDetails() {
+  console.log('LiquidityPoolDetails')
+
+  const { data: reserves } = useContractRead(
+    {
+      addressOrName: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+      contractInterface: UniswapV2Pair.abi
+    },
+    'getReserves'
+  )
+  let ethReserve : string = '0.00'
+  if (reserves != undefined) {
+    const ethReserveHex = reserves._reserve0._hex
+    const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
+    ethReserve = ethReserveDecimal.toFixed(2)
+  }
+  console.log('ethReserve:', ethReserve)
+
+  return(
+    <p className="mt-2">
+      TVL: {ethReserve} <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+    </p>
+  )
+}
 
 export default function Home() {
+  console.log('Home')
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
       <Head>
@@ -34,9 +73,7 @@ export default function Home() {
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool />
             </a>
             <a href="/uniswap">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>

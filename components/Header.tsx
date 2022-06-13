@@ -21,13 +21,14 @@ function Profile() {
   })
   const { disconnect } = useDisconnect()
 
-  if (data)
+  if (data) {
+    const addressShortened = `${data.address?.substring(0, 6)}...${data.address?.substring(38, 42)}`
     return (
       <div>
-        Connected to {data.address}
-        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">Disconnect Wallet</button>
+        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">{addressShortened}</button>
       </div>
     )
+  }
   return <button onClick={() => connect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">Connect Wallet</button>
 }
 

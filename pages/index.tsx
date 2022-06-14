@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import { createClient, WagmiConfig, useContractRead } from 'wagmi'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
+import BalancerVault from '../abis/BalancerVault.json'
 
 const client = createClient()
 
@@ -43,8 +44,24 @@ function LiquidityPoolDetails({ poolName }: any) {
     )
     if (reserves != undefined) {
       const ethReserveHex = reserves._reserve0._hex
-      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
+      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1_000_000_000_000_000_000
       ethReserve = ethReserveDecimal.toFixed(2)
+    }
+  } else if (poolName == 'balancer') {
+    const { data: poolTokens } = useContractRead(
+      {
+        addressOrName: '0xba12222222228d8ba445958a75a0704d566bf2c8',
+        contractInterface: BalancerVault.abi
+      },
+      'getPoolTokens',
+      {
+        args: '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
+      }
+    )
+    if (poolTokens != undefined) {
+      const ethBalanceHex = poolTokens.balances[0]._hex
+      const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
+      ethReserve = ethBalanceDecimal.toFixed(2)
     }
   }
   console.log('ethReserve:', ethReserve)
@@ -121,9 +138,7 @@ export default function Home() {
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool poolName='balancer' />
             </a>
             <a href="/balancer">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit 20WETH-80ELIMU pool tokens</button>

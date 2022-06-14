@@ -43,7 +43,7 @@ export default function Header() {
     <>
       <header className="flex items-center justify-center w-full h-22 border-b mb-10 p-4">
         <div className='w-96'>
-          <Image src="/logo-208x208.png" width={50} height={50} />
+          <Image src="/logo-208x208.png" alt="elimu.ai" width={50} height={50} />
         </div>
         <div className='w-96 text-right'>
           <Wallet />

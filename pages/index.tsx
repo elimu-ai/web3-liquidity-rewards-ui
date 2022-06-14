@@ -20,55 +20,51 @@ function LiquidityPool({ poolName }: any) {
 function LiquidityPoolDetails({ poolName }: any) {
   console.log('LiquidityPoolDetails')
 
-  let ethReserve : string = '0.00'
+  let ethBalance : string = '0.00'
+
+  let addressOrName : string = ''
+  let contractInterface : any = undefined
+  let contractMethod : string = ''
+  let contractArgs : any = undefined
   if (poolName == 'uniswap') {
-    const { data: reserves } = useContractRead(
-      {
-        addressOrName: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-        contractInterface: UniswapV2Pair.abi
-      },
-      'getReserves'
-    )
-    if (reserves != undefined) {
-      const ethReserveHex = reserves._reserve0._hex
-      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
-      ethReserve = ethReserveDecimal.toFixed(2)
-    }
+    addressOrName = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+    contractInterface = UniswapV2Pair.abi
+    contractMethod = 'getReserves'
   } else if (poolName == 'sushiswap') {
-    const { data: reserves } = useContractRead(
-      {
-        addressOrName: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        contractInterface: SushiSwapLPToken.abi
-      },
-      'getReserves'
-    )
-    if (reserves != undefined) {
-      const ethReserveHex = reserves._reserve0._hex
-      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1_000_000_000_000_000_000
-      ethReserve = ethReserveDecimal.toFixed(2)
-    }
+    addressOrName = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+    contractInterface = SushiSwapLPToken.abi
+    contractMethod = 'getReserves'
   } else if (poolName == 'balancer') {
-    const { data: poolTokens } = useContractRead(
-      {
-        addressOrName: '0xba12222222228d8ba445958a75a0704d566bf2c8',
-        contractInterface: BalancerVault.abi
-      },
-      'getPoolTokens',
-      {
-        args: '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
-      }
-    )
-    if (poolTokens != undefined) {
-      const ethBalanceHex = poolTokens.balances[0]._hex
-      const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
-      ethReserve = ethBalanceDecimal.toFixed(2)
-    }
+    addressOrName = '0xba12222222228d8ba445958a75a0704d566bf2c8',
+    contractInterface = BalancerVault.abi
+    contractMethod = 'getPoolTokens'
+    contractArgs = { args: '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba' }
   }
-  console.log('ethReserve:', ethReserve)
+
+  const { data } = useContractRead(
+    {
+      addressOrName: addressOrName,
+      contractInterface: contractInterface
+    },
+    contractMethod,
+    contractArgs
+  )
+  if (data != undefined) {
+    let ethBalanceHex : string = ''
+    if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
+      ethBalanceHex = data._reserve0._hex
+    } else if (poolName == 'balancer') {
+      ethBalanceHex = data.balances[0]._hex
+    }
+    const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
+    ethBalance = ethBalanceDecimal.toFixed(2)
+  }
+
+  console.log('ethBalance:', ethBalance)
 
   return(
     <p className="mt-2">
-      TVL: {ethReserve} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+      TVL: {ethBalance} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
     </p>
   )
 }

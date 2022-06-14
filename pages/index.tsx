@@ -19,28 +19,33 @@ function LiquidityPool({ poolName }: any) {
 function LiquidityPoolDetails({ poolName }: any) {
   console.log('LiquidityPoolDetails')
 
-  let addressOrName: string = ''
-  let contractInterface: any
-  if (poolName == 'uniswap') {
-    addressOrName = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61'
-    contractInterface = UniswapV2Pair.abi
-  } else if (poolName = 'sushiswap') {
-    addressOrName = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A'
-    contractInterface = SushiSwapLPToken.abi
-  }
-
-  const { data: reserves } = useContractRead(
-    {
-      addressOrName: addressOrName,
-      contractInterface: contractInterface
-    },
-    'getReserves'
-  )
   let ethReserve : string = '0.00'
-  if (reserves != undefined) {
-    const ethReserveHex = reserves._reserve0._hex
-    const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
-    ethReserve = ethReserveDecimal.toFixed(2)
+  if (poolName == 'uniswap') {
+    const { data: reserves } = useContractRead(
+      {
+        addressOrName: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+        contractInterface: UniswapV2Pair.abi
+      },
+      'getReserves'
+    )
+    if (reserves != undefined) {
+      const ethReserveHex = reserves._reserve0._hex
+      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
+      ethReserve = ethReserveDecimal.toFixed(2)
+    }
+  } else if (poolName == 'sushiswap') {
+    const { data: reserves } = useContractRead(
+      {
+        addressOrName: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+        contractInterface: SushiSwapLPToken.abi
+      },
+      'getReserves'
+    )
+    if (reserves != undefined) {
+      const ethReserveHex = reserves._reserve0._hex
+      const ethReserveDecimal = parseInt(ethReserveHex, 16) / 1000000000000000000
+      ethReserve = ethReserveDecimal.toFixed(2)
+    }
   }
   console.log('ethReserve:', ethReserve)
 

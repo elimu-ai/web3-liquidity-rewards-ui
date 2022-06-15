@@ -1,8 +1,76 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import { createClient, WagmiConfig, useContractRead } from 'wagmi'
+import UniswapV2Pair from '../abis/UniswapV2Pair.json'
+import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
+import BalancerVault from '../abis/BalancerVault.json'
+
+const client = createClient()
+
+function LiquidityPool({ poolName }: any) {
+  console.log('LiquidityPool')
+  return (
+    <WagmiConfig client={client}>
+      <LiquidityPoolDetails poolName={poolName} />
+    </WagmiConfig>
+  )
+}
+
+function LiquidityPoolDetails({ poolName }: any) {
+  console.log('LiquidityPoolDetails')
+
+  let ethBalance : string = '0.00'
+
+  let addressOrName : string = ''
+  let contractInterface : any = undefined
+  let contractMethod : string = ''
+  let contractArgs : any = undefined
+  if (poolName == 'uniswap') {
+    addressOrName = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+    contractInterface = UniswapV2Pair.abi
+    contractMethod = 'getReserves'
+  } else if (poolName == 'sushiswap') {
+    addressOrName = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+    contractInterface = SushiSwapLPToken.abi
+    contractMethod = 'getReserves'
+  } else if (poolName == 'balancer') {
+    addressOrName = '0xba12222222228d8ba445958a75a0704d566bf2c8',
+    contractInterface = BalancerVault.abi
+    contractMethod = 'getPoolTokens'
+    contractArgs = { args: '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba' }
+  }
+
+  const { data } = useContractRead(
+    {
+      addressOrName: addressOrName,
+      contractInterface: contractInterface
+    },
+    contractMethod,
+    contractArgs
+  )
+  if (data != undefined) {
+    let ethBalanceHex : string = ''
+    if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
+      ethBalanceHex = data._reserve0._hex
+    } else if (poolName == 'balancer') {
+      ethBalanceHex = data.balances[0]._hex
+    }
+    const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
+    ethBalance = ethBalanceDecimal.toFixed(2)
+  }
+
+  console.log('ethBalance:', ethBalance)
+
+  return(
+    <p className="mt-2">
+      TVL: {ethBalance} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+    </p>
+  )
+}
 
 export default function Home() {
+  console.log('Home')
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
       <Head>
@@ -29,14 +97,12 @@ export default function Home() {
             <a href="/uniswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 50%/50%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool poolName='uniswap' />
             </a>
             <a href="/uniswap">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>
@@ -47,14 +113,12 @@ export default function Home() {
             <a href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 50%/50%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool poolName='sushiswap' />
             </a>
             <a href="/sushiswap">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SLP pool tokens</button>
@@ -65,14 +129,12 @@ export default function Home() {
             <a href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
               <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$ETH/$ELIMU 20%/80%</code>
+                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 20%/80%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
               </p>
-              <p className="mt-2">
-                TVL: 0.00 <code className="font-mono">$ETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
-              </p>
+              <LiquidityPool poolName='balancer' />
             </a>
             <a href="/balancer">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit 20WETH-80ELIMU pool tokens</button>

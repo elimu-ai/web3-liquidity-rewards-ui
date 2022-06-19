@@ -4,7 +4,7 @@ UI for the liquidity provider smart contracts.
 
 URL: https://rewards.elimu.ai
 
-## Smart Contracts
+## Ethereum Smart Contracts
 
 See https://github.com/elimu-ai/web3-smart-contracts
 

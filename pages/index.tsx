@@ -8,6 +8,10 @@ import BalancerVault from '../abis/BalancerVault.json'
 
 const client = createClient()
 
+let ethBalanceUniswap = 0.00
+let ethBalanceSushiSwap = 0.00
+let ethBalanceBalancer = 0.00
+
 function LiquidityPool({ poolName }: any) {
   console.log('LiquidityPool')
   return (
@@ -58,6 +62,18 @@ function LiquidityPoolDetails({ poolName }: any) {
     }
     const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
     ethBalance = ethBalanceDecimal.toFixed(2)
+
+    if (poolName == 'uniswap') {
+      ethBalanceUniswap = ethBalanceDecimal
+    } else if (poolName == 'sushiswap') {
+      ethBalanceSushiSwap = ethBalanceDecimal
+    } else if (poolName == 'balancer') {
+      ethBalanceBalancer = ethBalanceDecimal
+    }
+    const ethBalanceTotal = ethBalanceUniswap + ethBalanceSushiSwap + ethBalanceBalancer
+    const totalLiquidityAmount = `Ξ${ethBalanceTotal.toFixed(2)}`
+    let htmlElement = (document.getElementById('totalLiquidityAmount') as HTMLElement)
+    htmlElement.innerHTML = totalLiquidityAmount
   }
 
   console.log('ethBalance:', ethBalance)
@@ -151,6 +167,11 @@ export default function Home() {
               <a href="https://eng.elimu.ai/contributions/aragon-dao" className="text-purple-600">elimu.ai</a>
               &nbsp;and <a href="https://github.com/elimu-ai/wiki#donate-cryptocurrency-eth" className="text-purple-600">https://github.com/elimu-ai/wiki</a>.
             </p>
+          </div>
+
+          <div className="bg-white mt-10 p-6 rounded-2xl w-full">
+            <h2 className="text-4xl mb-6">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
+            <iframe className="border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>
           </div>
         </div>
       </main>

@@ -80,7 +80,7 @@ function LiquidityPoolDetails({ poolName }: any) {
 
   return(
     <p className="mt-2">
-      TVL: {ethBalance} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+      Liquidity: {ethBalance} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
     </p>
   )
 }
@@ -171,8 +171,8 @@ export default function Home() {
 
           <div className="bg-white mt-10 p-6 rounded-2xl w-full">
             <h2 className="text-4xl mb-6">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
-            <iframe className="border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>
             <iframe className="pt-6" src="https://dune.com/embeds/970563/1681039/4e64d66f-fada-4687-8410-2ee8dd31b126" width="100%" height="400"></iframe>
+            <iframe className="border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>
           </div>
         </div>
       </main>

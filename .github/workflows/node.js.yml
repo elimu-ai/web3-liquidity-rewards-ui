@@ -13,10 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: community-token
 
     strategy:
       matrix:
@@ -30,4 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm run lint
+#     - run: npm test

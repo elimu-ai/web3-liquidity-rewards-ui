@@ -1,7 +1,17 @@
 import Image from "next/image"
-import { WagmiConfig, createClient } from 'wagmi'
+import { WagmiConfig, createClient, configureChains, defaultChains } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
-const client = createClient()
+const { chains, provider, webSocketProvider } = configureChains(
+  defaultChains,
+  [publicProvider()],
+)
+
+const client = createClient({
+  autoConnect: true,
+  provider,
+  webSocketProvider
+})
 
 function Wallet() {
   return (
@@ -17,11 +27,10 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 function Profile() {
   console.log('Profile')
   const { connect } = useConnect({connector: new InjectedConnector()})
-  const { data: account } = useAccount()
-  const { data: ensName } = useEnsName({address: account?.address})
+  const { address } = useAccount()
+  const { data: ensName } = useEnsName({ address })
   const { disconnect } = useDisconnect()
-
-  const address = account?.address
+  
   if (address != undefined) {
     const addressShortened : string = `${address.substring(0, 6)}...${address.substring(38, 42)}`
     let addressOrEnsName = addressShortened

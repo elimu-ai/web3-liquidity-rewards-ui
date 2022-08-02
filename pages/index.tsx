@@ -1,12 +1,22 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { createClient, WagmiConfig, useContractRead } from 'wagmi'
+import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
 
-const client = createClient()
+const { chains, provider, webSocketProvider } = configureChains(
+  defaultChains,
+  [publicProvider()],
+)
+
+const client = createClient({
+  autoConnect: true,
+  provider,
+  webSocketProvider
+})
 
 let ethBalanceUniswap = 0.00
 let ethBalanceSushiSwap = 0.00
@@ -42,17 +52,15 @@ function LiquidityPoolDetails({ poolName }: any) {
     addressOrName = '0xba12222222228d8ba445958a75a0704d566bf2c8',
     contractInterface = BalancerVault.abi
     contractMethod = 'getPoolTokens'
-    contractArgs = { args: '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba' }
+    contractArgs = '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
   }
 
-  const { data } = useContractRead(
-    {
-      addressOrName: addressOrName,
-      contractInterface: contractInterface
-    },
-    contractMethod,
-    contractArgs
-  )
+  const { data } = useContractRead({
+    addressOrName: addressOrName,
+    contractInterface: contractInterface,
+    functionName: contractMethod,
+    args: contractArgs
+  })
   if (data != undefined) {
     let ethBalanceHex : string = ''
     if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {

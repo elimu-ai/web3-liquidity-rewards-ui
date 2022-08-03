@@ -11,7 +11,7 @@
   "dependencies": {
     "@netlify/plugin-nextjs": "^4.8.0",
     "eslint": "^8.21.0",
-    "eslint-config-next": "^12.1.6",
+    "eslint-config-next": "^12.2.3",
     "ethers": "^5.6.8",
     "next": "^12.1.5",
     "react": "^17.0.2",

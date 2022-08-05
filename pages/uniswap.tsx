@@ -5,6 +5,7 @@ import { Alert } from '@mui/material'
 import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
+import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -37,14 +38,79 @@ function ApproveButton() {
     args: ['0xb8b6430b58a4fbc57bd5cd7715d318065f2dcd81', ethers.utils.parseUnits('1000')]
   })
 
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...config,
+    onError(error) {
+      console.log('onError:\n', error)
+    },
+    onSuccess(data) {
+      console.log('onSuccess\n', data)
+    }
+  })
   
   return (
     <>
       <button 
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
+          // disabled
           onClick={() => write?.()}>
         Approve UNI-V2 pool tokens
+      </button>
+      <div>
+        {error && (
+          <Alert severity="error">{error.message}</Alert>
+        )}
+        {isLoading && (
+          <Alert severity="info">Check Wallet</Alert>
+        )}
+        {isSuccess && (
+          <Alert severity="success">Transaction: {JSON.stringify(data)}</Alert>
+        )}
+      </div>
+    </>
+  )
+}
+
+function DepositButtonWrapper({ depositAmount }: any) {
+  console.log('DepositButtonWrapper')
+  console.log('depositAmount:', depositAmount)
+  return (
+    <WagmiConfig client={client}>
+      <DepositButton depositAmount={depositAmount} />
+    </WagmiConfig>
+  )
+}
+
+function DepositButton({ depositAmount }: any) {
+  console.log('DepositButton')
+
+  console.log('depositAmount:', depositAmount)
+
+  const { config, error } = usePrepareContractWrite({
+    addressOrName: '0xb8b6430b58a4fbc57bd5cd7715d318065f2dcd81',
+    contractInterface: UniswapPoolRewards.abi,
+    functionName: 'depositPoolTokens',
+    args: [ethers.utils.parseUnits(depositAmount.toString())]
+  })
+
+  const { data, isLoading, isSuccess, write } = useContractWrite({
+    ...config,
+    onError(error) {
+      console.log('onError:\n', error)
+    },
+    onSuccess(data) {
+      console.log('onSuccess\n', data)
+    }
+  })
+  
+  return (
+    <>
+      <button 
+          id="depositButton"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
+          // disabled
+          onClick={() => write?.()}>
+        Deposit UNI-V2 pool tokens
       </button>
       <div>
         {error && (
@@ -95,10 +161,23 @@ export default function Uniswap() {
             <p>Deposit your pool tokens into the elimu.ai rewards smart contract to start earning rewards.</p>
             <div className="input-group">
                 <input
+                    id="depositInput"
                     type="number"
                     placeholder="Amount"
-                    className="input input-bordered w-full" />
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit UNI-V2 pool tokens</button>
+                    className="input mt-4 w-full p-4 border border-solid border-gray-300 rounded"
+                    onChange={(event: any) => {
+                      console.log('onChange')
+                      const amount : Number = event.target.value
+                      console.log('amount:', amount)
+                      let depositButtonElement = (document.getElementById('depositButton') as HTMLButtonElement)
+                      // if (amount > 0) {
+                      //   depositButtonElement.disabled = false
+                      // } else {
+                      //   depositButtonElement.disabled = true
+                      // }
+                    }}
+                    />
+                <DepositButtonWrapper depositAmount={0.1} />
             </div>
           </div>
         </div>

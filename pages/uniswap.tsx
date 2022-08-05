@@ -1,9 +1,11 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead, usePrepareContractWrite } from 'wagmi'
+import { Alert } from '@mui/material'
+import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
+import { ethers } from 'ethers'
 
 const { chains, provider, webSocketProvider } = configureChains(
   defaultChains,
@@ -15,6 +17,49 @@ const client = createClient({
   provider,
   webSocketProvider
 })
+
+function ApproveButtonWrapper() {
+  console.log('ApproveButtonWrapper')
+  return (
+    <WagmiConfig client={client}>
+      <ApproveButton />
+    </WagmiConfig>
+  )
+}
+
+function ApproveButton() {
+  console.log('ApproveButton')
+
+  const { config, error } = usePrepareContractWrite({
+    addressOrName: '0x9936bdcd16e8c709c4cb8d7b871f0011b4cc65de',
+    contractInterface: UniswapV2Pair.abi,
+    functionName: 'approve',
+    args: ['0xb8b6430b58a4fbc57bd5cd7715d318065f2dcd81', ethers.utils.parseUnits('1000')]
+  })
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+  
+  return (
+    <>
+      <button 
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4"
+          onClick={() => write?.()}>
+        Approve UNI-V2 pool tokens
+      </button>
+      <div>
+        {error && (
+          <Alert severity="error">{error.message}</Alert>
+        )}
+        {isLoading && (
+          <Alert severity="info">Check Wallet</Alert>
+        )}
+        {isSuccess && (
+          <Alert severity="success">Transaction: {JSON.stringify(data)}</Alert>
+        )}
+      </div>
+    </>
+  )
+}
 
 export default function Uniswap() {
   console.log('Uniswap')
@@ -40,7 +85,7 @@ export default function Uniswap() {
           <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
             <h3 className="text-2xl mb-4 font-bold">1. Approve Pool Tokens</h3>
             <p>Approve the amount of Uniswap pool tokens to be deposited into the elimu.ai rewards smart contract.</p>
-            <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Approve UNI-V2 pool tokens</button>
+            <ApproveButtonWrapper />
           </div>
         </div>
 
@@ -52,9 +97,8 @@ export default function Uniswap() {
                 <input
                     type="number"
                     placeholder="Amount"
-                    className="input input-bordered w-full"
-                    />
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>
+                    className="input input-bordered w-full" />
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit UNI-V2 pool tokens</button>
             </div>
           </div>
         </div>

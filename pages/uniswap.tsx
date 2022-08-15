@@ -87,7 +87,7 @@ function DepositButton({ depositAmount }: any) {
   console.log('depositAmount:', depositAmount)
 
   const { config, error } = usePrepareContractWrite({
-    addressOrName: '0xb8b6430b58a4fbc57bd5cd7715d318065f2dcd81',
+    addressOrName: '0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1',
     contractInterface: UniswapPoolRewards.abi,
     functionName: 'depositPoolTokens',
     args: [ethers.utils.parseUnits(depositAmount.toString())]

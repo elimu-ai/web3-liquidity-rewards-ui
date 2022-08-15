@@ -35,7 +35,7 @@ function ApproveButton() {
     addressOrName: '0x9936bdcd16e8c709c4cb8d7b871f0011b4cc65de',
     contractInterface: UniswapV2Pair.abi,
     functionName: 'approve',
-    args: ['0xb8b6430b58a4fbc57bd5cd7715d318065f2dcd81', ethers.utils.parseUnits('1000')]
+    args: ['0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1', ethers.utils.parseUnits('1000')]
   })
 
   const { data, isLoading, isSuccess, write } = useContractWrite({

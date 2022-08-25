@@ -1,5 +1,7 @@
 # Liquidity provider rewards (UI) 💸
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/abbcc184-5243-403e-a407-da3805ef5fea/deploy-status)](https://app.netlify.com/sites/web3-liquidity-rewards-ui/deploys)
+
 UI for the liquidity provider smart contracts.
 
 URL: https://rewards.elimu.ai

@@ -4,7 +4,8 @@
 
 UI for the liquidity provider smart contracts.
 
-URL: https://rewards.elimu.ai
+- URL (Rinkeby): https://rewards-rinkeby.netlify.app
+- URL (Mainnet): https://rewards.elimu.ai
 
 ## Ethereum Smart Contracts
 

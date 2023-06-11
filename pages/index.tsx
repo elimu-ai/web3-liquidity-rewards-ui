@@ -8,7 +8,7 @@ import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
-import { ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],
@@ -55,7 +55,7 @@ function LiquidityPoolDetails({ poolName }: any) {
     address = '0xba12222222228d8ba445958a75a0704d566bf2c8',
     abi = BalancerVault.abi
     functionName = 'getPoolTokens'
-    args = '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
+    args = ['0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba']
   }
 
   const { data, isError, isLoading } = useContractRead({
@@ -75,17 +75,14 @@ function LiquidityPoolDetails({ poolName }: any) {
   }
 
   if (data != undefined) {
-    // let ethBalanceHex : string = ''
-    // if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
-    //   ethBalanceHex = data._reserve0._hex
-    // } else if (poolName == 'balancer') {
-    //   ethBalanceHex = data.balances[0]._hex
-    // }
-    // const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
-    // ethBalance = ethBalanceDecimal.toFixed(2)
+    let ethBalanceBigInt: BigNumberish = BigInt(0)
     let poolTokenHoldings: any[] = data
     console.log('poolTokenHoldings:', poolTokenHoldings)
-    const ethBalanceBigInt = poolTokenHoldings[0]
+    if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
+      ethBalanceBigInt = poolTokenHoldings[0]
+    } else if (poolName == 'balancer') {
+      ethBalanceBigInt = poolTokenHoldings[1][0]
+    }
     console.log('ethBalanceBigInt:', ethBalanceBigInt)
     const ethBalanceDecimal = Number(ethers.utils.formatEther(ethBalanceBigInt))
     console.log('ethBalanceDecimal:', ethBalanceDecimal)
@@ -173,7 +170,7 @@ export default function Home() {
             </a>
           </div>
           
-          {/* <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
+          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
             <a href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
               <p className="mt-4 text-xl">
@@ -187,7 +184,7 @@ export default function Home() {
             <a href="/balancer">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit 20WETH-80ELIMU pool tokens</button>
             </a>
-          </div> */}
+          </div>
 
           <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
             <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>
@@ -205,7 +202,7 @@ export default function Home() {
             <h2 className="text-4xl">Total <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH</code> Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/970563/1681039/4e64d66f-fada-4687-8410-2ee8dd31b126" width="100%" height="400"></iframe>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/979280/1696305/0bbe44ba-afb6-4350-8e67-ff7d8a94e795" width="100%" height="400"></iframe>
-            {/* <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe> */}
+            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>
           </div>
         </div>
       </main>

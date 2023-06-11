@@ -2,27 +2,27 @@ import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { Alert } from '@mui/material'
-import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { WagmiConfig, configureChains, useContractRead, usePrepareContractWrite, useContractWrite, mainnet, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
 
-const { chains, provider, webSocketProvider } = configureChains(
-  defaultChains,
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
   [publicProvider()],
 )
 
-const client = createClient({
+const config = createConfig({
   autoConnect: true,
-  provider,
-  webSocketProvider
+  publicClient,
+  webSocketPublicClient
 })
 
 function ApproveButtonWrapper() {
   console.log('ApproveButtonWrapper')
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <ApproveButton />
     </WagmiConfig>
   )
@@ -32,8 +32,8 @@ function ApproveButton() {
   console.log('ApproveButton')
 
   const { config, error } = usePrepareContractWrite({
-    addressOrName: '0x9936bdcd16e8c709c4cb8d7b871f0011b4cc65de',
-    contractInterface: UniswapV2Pair.abi,
+    address: '0x9936bdcd16e8c709c4cb8d7b871f0011b4cc65de',
+    abi: UniswapV2Pair.abi,
     functionName: 'approve',
     args: ['0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1', ethers.utils.parseUnits('1000')]
   })
@@ -75,7 +75,7 @@ function DepositButtonWrapper({ depositAmount }: any) {
   console.log('DepositButtonWrapper')
   console.log('depositAmount:', depositAmount)
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <DepositButton depositAmount={depositAmount} />
     </WagmiConfig>
   )
@@ -87,8 +87,8 @@ function DepositButton({ depositAmount }: any) {
   console.log('depositAmount:', depositAmount)
 
   const { config, error } = usePrepareContractWrite({
-    addressOrName: '0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1',
-    contractInterface: UniswapPoolRewards.abi,
+    address: '0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1',
+    abi: UniswapPoolRewards.abi,
     functionName: 'depositPoolTokens',
     args: [ethers.utils.parseUnits(depositAmount.toString())]
   })

@@ -2,21 +2,23 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, createClient, configureChains, defaultChains, useContractRead } from 'wagmi'
+import { WagmiConfig, configureChains, useContractRead, mainnet, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
+import { useIsMounted } from '../hooks/useIsMounted'
+import { ethers } from 'ethers'
 
-const { chains, provider, webSocketProvider } = configureChains(
-  defaultChains,
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
   [publicProvider()],
 )
 
-const client = createClient({
+const config = createConfig({
   autoConnect: true,
-  provider,
-  webSocketProvider
+  publicClient,
+  webSocketPublicClient
 })
 
 let ethBalanceUniswap = 0.00
@@ -26,7 +28,7 @@ let ethBalanceBalancer = 0.00
 function LiquidityPool({ poolName }: any) {
   console.log('LiquidityPool')
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <LiquidityPoolDetails poolName={poolName} />
     </WagmiConfig>
   )
@@ -35,42 +37,59 @@ function LiquidityPool({ poolName }: any) {
 function LiquidityPoolDetails({ poolName }: any) {
   console.log('LiquidityPoolDetails')
 
-  let ethBalance : string = '0.00'
+  let ethBalanceAsString : string = '0.00'
 
-  let addressOrName : string = ''
-  let contractInterface : any = undefined
-  let contractMethod : string = ''
-  let contractArgs : any = undefined
+  let address : any = ''
+  let abi : any = undefined
+  let functionName : string = ''
+  let args : any = undefined
   if (poolName == 'uniswap') {
-    addressOrName = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-    contractInterface = UniswapV2Pair.abi
-    contractMethod = 'getReserves'
+    address = '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+    abi = UniswapV2Pair.abi
+    functionName = 'getReserves'
   } else if (poolName == 'sushiswap') {
-    addressOrName = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-    contractInterface = SushiSwapLPToken.abi
-    contractMethod = 'getReserves'
+    address = '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+    abi = SushiSwapLPToken.abi
+    functionName = 'getReserves'
   } else if (poolName == 'balancer') {
-    addressOrName = '0xba12222222228d8ba445958a75a0704d566bf2c8',
-    contractInterface = BalancerVault.abi
-    contractMethod = 'getPoolTokens'
-    contractArgs = '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
+    address = '0xba12222222228d8ba445958a75a0704d566bf2c8',
+    abi = BalancerVault.abi
+    functionName = 'getPoolTokens'
+    args = '0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba'
   }
 
-  const { data } = useContractRead({
-    addressOrName: addressOrName,
-    contractInterface: contractInterface,
-    functionName: contractMethod,
-    args: contractArgs
+  const { data, isError, isLoading } = useContractRead({
+    address: address,
+    abi: abi,
+    functionName: functionName,
+    args: args
   })
+  console.log('data:', data)
+
+  if (!useIsMounted() || isLoading) {
+    return (
+      <>
+        Loading...
+      </>
+    )
+  }
+
   if (data != undefined) {
-    let ethBalanceHex : string = ''
-    if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
-      ethBalanceHex = data._reserve0._hex
-    } else if (poolName == 'balancer') {
-      ethBalanceHex = data.balances[0]._hex
-    }
-    const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
-    ethBalance = ethBalanceDecimal.toFixed(2)
+    // let ethBalanceHex : string = ''
+    // if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
+    //   ethBalanceHex = data._reserve0._hex
+    // } else if (poolName == 'balancer') {
+    //   ethBalanceHex = data.balances[0]._hex
+    // }
+    // const ethBalanceDecimal = parseInt(ethBalanceHex, 16) / 1_000_000_000_000_000_000
+    // ethBalance = ethBalanceDecimal.toFixed(2)
+    let poolTokenHoldings: any[] = data
+    console.log('poolTokenHoldings:', poolTokenHoldings)
+    const ethBalanceBigInt = poolTokenHoldings[0]
+    console.log('ethBalanceBigInt:', ethBalanceBigInt)
+    const ethBalanceDecimal = Number(ethers.utils.formatEther(ethBalanceBigInt))
+    console.log('ethBalanceDecimal:', ethBalanceDecimal)
+    ethBalanceAsString = ethBalanceDecimal.toFixed(2)
 
     if (poolName == 'uniswap') {
       ethBalanceUniswap = ethBalanceDecimal
@@ -85,11 +104,11 @@ function LiquidityPoolDetails({ poolName }: any) {
     htmlElement.innerHTML = totalLiquidityAmount
   }
 
-  console.log('ethBalance:', ethBalance)
+  console.log('ethBalanceAsString:', ethBalanceAsString)
 
   return(
     <p className="mt-2">
-      Liquidity: {ethBalance} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
+      Liquidity: {ethBalanceAsString} <code className="font-mono">$WETH</code> &nbsp;&nbsp;&nbsp; APY: 0.00%
     </p>
   )
 }
@@ -138,7 +157,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
+          {/* <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
             <a href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
               <p className="mt-4 text-xl">
@@ -168,7 +187,7 @@ export default function Home() {
             <a href="/balancer">
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit 20WETH-80ELIMU pool tokens</button>
             </a>
-          </div>
+          </div> */}
 
           <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
             <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>
@@ -185,8 +204,8 @@ export default function Home() {
           <div className="bg-white mt-10 p-6 rounded-2xl w-full">
             <h2 className="text-4xl">Total <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH</code> Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/970563/1681039/4e64d66f-fada-4687-8410-2ee8dd31b126" width="100%" height="400"></iframe>
-            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/979280/1696305/0bbe44ba-afb6-4350-8e67-ff7d8a94e795" width="100%" height="400"></iframe>
-            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>
+            {/* <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/979280/1696305/0bbe44ba-afb6-4350-8e67-ff7d8a94e795" width="100%" height="400"></iframe>
+            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe> */}
           </div>
         </div>
       </main>

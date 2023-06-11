@@ -1,21 +1,21 @@
 import Image from "next/image"
-import { WagmiConfig, createClient, configureChains, defaultChains } from 'wagmi'
+import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
-const { chains, provider, webSocketProvider } = configureChains(
-  defaultChains,
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
   [publicProvider()],
 )
 
-const client = createClient({
+const config = createConfig({
   autoConnect: true,
-  provider,
-  webSocketProvider
+  publicClient,
+  webSocketPublicClient
 })
 
 function Wallet() {
   return (
-    <WagmiConfig client={client}>
+    <WagmiConfig config={config}>
       <Profile />
     </WagmiConfig>
   )

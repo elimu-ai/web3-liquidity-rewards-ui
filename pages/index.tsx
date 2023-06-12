@@ -10,16 +10,8 @@ import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [publicProvider()],
-)
-
-const config = createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient
-})
+const { publicClient } = configureChains([mainnet], [publicProvider()])
+const config = createConfig({ autoConnect: true, publicClient })
 
 let ethBalanceUniswap = 0.00
 let ethBalanceSushiSwap = 0.00

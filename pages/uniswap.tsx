@@ -8,16 +8,8 @@ import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [publicProvider()],
-)
-
-const config = createConfig({
-  autoConnect: true,
-  publicClient,
-  webSocketPublicClient
-})
+const { publicClient } = configureChains([mainnet], [publicProvider()])
+const config = createConfig({ autoConnect: true, publicClient })
 
 function ApproveButtonWrapper() {
   console.log('ApproveButtonWrapper')

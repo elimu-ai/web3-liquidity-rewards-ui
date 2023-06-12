@@ -2,15 +2,11 @@ import Image from "next/image"
 import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [publicProvider()],
-)
-
+const { chains, publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({
   autoConnect: true,
-  publicClient,
-  webSocketPublicClient
+  connectors: [new InjectedConnector({ chains })],
+  publicClient
 })
 
 function Wallet() {
@@ -23,15 +19,21 @@ function Wallet() {
 
 import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useIsMounted } from "../hooks/useIsMounted"
 
 function Profile() {
   console.log('Profile')
-  const { connect } = useConnect({connector: new InjectedConnector()})
-  const { address } = useAccount()
+  const { address, connector, isConnecting, isDisconnected } = useAccount()
+  console.log('address:', address)
+  console.log('connector:', connector)
+  const { connect, connectors } = useConnect()
+  console.log('connectors:', connectors)
+  console.log('connectors[0]:', connectors[0])
+  
   const { data: ensName } = useEnsName({ address })
   const { disconnect } = useDisconnect()
   
-  if (address != undefined) {
+  if (useIsMounted() && (address != undefined)) {
     const addressShortened : string = `${address.substring(0, 6)}...${address.substring(38, 42)}`
     let addressOrEnsName = addressShortened
     if (ensName != undefined) {
@@ -43,7 +45,7 @@ function Profile() {
       </div>
     )
   }
-  return <button onClick={() => connect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">Connect Wallet</button>
+  return <button onClick={() => connect({ connector: connectors[0] })} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">Connect Wallet</button>
 }
 
 export default function Header() {

@@ -127,30 +127,26 @@ export default function Home() {
 
         <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
           <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <Link href="/uniswap">
-              <a className="hover:text-purple-600 focus:text-purple-600">
-                <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
-                <p className="mt-4 text-xl">
-                  <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
-                </p>
-                <p className="mt-4">
-                  Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
-                </p>
-                <LiquidityPool poolName='uniswap' />
-              </a>
+            <Link href="/uniswap" className="hover:text-purple-600 focus:text-purple-600">
+              <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
+              </p>
+              <p className="mt-4">
+                Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
+              </p>
+              <LiquidityPool poolName='uniswap' />
             </Link>
             <Link href="/uniswap">
-              <a>
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>
-              </a>  
+              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit UNI-V2 pool tokens</button>
             </Link>
           </div>
 
           <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
             <a href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
-              <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH/$ELIMU 50%/50%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day
@@ -165,8 +161,8 @@ export default function Home() {
           <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
             <a href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
               <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
-              <p className="mt-4 text-xl">
-                <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">$WETH/$ELIMU 20%/80%</code>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH/$ELIMU 20%/80%</code>
               </p>
               <p className="mt-4">
                 Token emissions: 0.00 <code className="font-mono">$ELIMU</code>/day

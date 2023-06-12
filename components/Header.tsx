@@ -20,6 +20,7 @@ function Wallet() {
 import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useIsMounted } from "../hooks/useIsMounted"
+import Link from "next/link"
 
 function Profile() {
   console.log('Profile')
@@ -54,7 +55,9 @@ export default function Header() {
     <>
       <header className="flex items-center justify-center w-full h-22 border-b mb-10 p-4">
         <div className='w-96'>
-          <Image src="/logo-208x208.png" alt="elimu.ai" width={50} height={50} />
+          <Link href="/">
+            <Image src="/logo-208x208.png" alt="elimu.ai" width={50} height={50} />
+          </Link>
         </div>
         <div className='w-96 text-right'>
           <Wallet />

@@ -152,8 +152,8 @@ export default function Uniswap() {
               <p>
                 Your current pool token balance:
               </p>
-              <code>
-                0 $UNI-V2
+              <code className='text-lg'>
+                0.00 $UNI-V2
               </code>
             </div>
           </div>
@@ -190,8 +190,8 @@ export default function Uniswap() {
               <p>
                 Your current pool token deposits:
               </p>
-              <code>
-                0 $UNI-V2
+              <code className='text-lg'>
+                0.00 $UNI-V2
               </code>
             </div>
           </div>
@@ -207,8 +207,8 @@ export default function Uniswap() {
               <p>
                 Your claimable reward:
               </p>
-              <code>
-                0 $ELIMU
+              <code className='text-lg'>
+                0.00 $ELIMU
               </code>
               <div>
                 <button 

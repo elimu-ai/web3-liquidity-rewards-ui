@@ -179,10 +179,9 @@ export default function Home() {
             <p>
               <a className="text-purple-600" href="https://etherscan.io/token/0xe29797910d413281d2821d5d9a989262c8121cc2">
                 <code className="font-mono">$ELIMU</code>
-              </a> is the governance token used by the elimu.ai 
-              Community DAO. You can learn more at&nbsp;
-              <a href="https://eng.elimu.ai/contributions/aragon-dao" className="text-purple-600">elimu.ai</a>
-              &nbsp;and <a href="https://github.com/elimu-ai/wiki#donate-cryptocurrency-eth" className="text-purple-600">https://github.com/elimu-ai/wiki</a>.
+              </a> is the governance token used by the Ξlimu DAO. You can learn more at&nbsp;
+              <a href="https://elimu.ai" className="text-purple-600">elimu.ai</a>
+              &nbsp;and <a href="https://github.com/elimu-ai/wiki" className="text-purple-600">https://github.com/elimu-ai/wiki</a>.
             </p>
           </div>
 

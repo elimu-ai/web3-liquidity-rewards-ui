@@ -8,9 +8,10 @@ import { BigNumberish, ethers } from 'ethers'
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
 
-export default function RewardDetails({ poolName }: any) {
+export default function RewardDetails({ poolName, elimuBalance }: any) {
     console.log('RewardDetails')
     console.log('poolName:', poolName)
+    console.log('elimuBalance:', elimuBalance)
 
     if ((poolName == 'sushiswap') || (poolName == 'balancer')) {
         return (
@@ -44,7 +45,7 @@ export default function RewardDetails({ poolName }: any) {
                 Reward rate: {Number(rewardRatePerMonthAsDecimal).toLocaleString()} <code className="font-mono">$ELIMU</code>/month
             </p>
             <p>
-                Estimated APY: <b>0.00%</b>
+                Estimated APY: <b>{(Number(rewardRatePerMonthAsDecimal) * 12 * 100 / elimuBalance).toFixed(2)}%</b>
             </p>
         </>
     )

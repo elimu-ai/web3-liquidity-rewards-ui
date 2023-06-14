@@ -21,8 +21,8 @@ let ethBalanceBalancer = 0.00
 function LiquidityPoolDetails({ poolName }: any) {
   console.log('LiquidityPoolDetails')
 
-  let ethBalanceAsString : string = '0.00'
-  let elimuBalanceAsString : string = '0.00'
+  let ethBalanceDecimal : number = 0.00
+  let elimuBalanceDecimal : number = 0.00
   
   let address : any = ''
   let abi : any = undefined
@@ -71,12 +71,8 @@ function LiquidityPoolDetails({ poolName }: any) {
     }
     console.log('ethBalanceBigInt:', ethBalanceBigInt)
     console.log('elimuBalanceBigInt:', elimuBalanceBigInt)
-    const ethBalanceDecimal = Number(ethers.utils.formatEther(ethBalanceBigInt))
-    console.log('ethBalanceDecimal:', ethBalanceDecimal)
-    ethBalanceAsString = ethBalanceDecimal.toFixed(2)
-    const elimuBalanceDecimal = Number(ethers.utils.formatEther(elimuBalanceBigInt))
-    console.log('elimuBalanceDecimal:', elimuBalanceDecimal)
-    elimuBalanceAsString = Number(elimuBalanceDecimal).toLocaleString(undefined, {maximumFractionDigits: 0})
+    ethBalanceDecimal = Number(ethers.utils.formatEther(ethBalanceBigInt))
+    elimuBalanceDecimal = Number(ethers.utils.formatEther(elimuBalanceBigInt))
 
     if (poolName == 'uniswap') {
       ethBalanceUniswap = ethBalanceDecimal
@@ -91,16 +87,16 @@ function LiquidityPoolDetails({ poolName }: any) {
     htmlElement.innerHTML = totalLiquidityAmount
   }
 
-  console.log('ethBalanceAsString:', ethBalanceAsString)
-  console.log('elimuBalanceAsString:', elimuBalanceAsString)
+  console.log('ethBalanceDecimal:', ethBalanceDecimal)
+  console.log('elimuBalanceDecimal:', elimuBalanceDecimal)
 
   return(
     <>
       <p>
-        <code>{ethBalanceAsString} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/weth_28.png'/> / {elimuBalanceAsString} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/elimuai_32.png'/></code>
+        <code>{ethBalanceDecimal.toFixed(2)} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/weth_28.png'/> / {elimuBalanceDecimal.toLocaleString(undefined, {maximumFractionDigits: 0})} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/elimuai_32.png'/></code>
       </p>
       <div className='mt-4 border-t pt-4'>
-        <RewardDetails poolName={poolName} />
+        <RewardDetails poolName={poolName} elimuBalance={elimuBalanceDecimal} />
       </div> 
     </>
   )

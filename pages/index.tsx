@@ -10,6 +10,7 @@ import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetails from '../components/RewardDetails'
+import Image from 'next/image'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -93,7 +94,7 @@ function LiquidityPoolDetails({ poolName }: any) {
   return(
     <>
       <p>
-        <code>{ethBalanceDecimal.toFixed(2)} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/weth_28.png'/> / {elimuBalanceDecimal.toLocaleString(undefined, {maximumFractionDigits: 0})} <img className='inline-block h-4 w-4' src='https://etherscan.io/token/images/elimuai_32.png'/></code>
+        <code>{ethBalanceDecimal.toFixed(2)} <Image className='inline-block' width={16} height={16} src='https://etherscan.io/token/images/weth_28.png' alt='$WETH' /> / {elimuBalanceDecimal.toLocaleString(undefined, {maximumFractionDigits: 0})} <Image className='inline-block' width={16} height={16} src='https://etherscan.io/token/images/elimuai_32.png' alt='$ELIMU' /></code>
       </p>
       <div className='mt-4 border-t pt-4'>
         <RewardDetails poolName={poolName} elimuBalance={elimuBalanceDecimal} />

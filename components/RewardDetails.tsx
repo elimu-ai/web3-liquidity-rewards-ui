@@ -4,6 +4,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import { useContractRead } from 'wagmi'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
+import { Alert } from '@mui/material'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -13,15 +14,21 @@ export default function RewardDetails({ poolName, elimuBalance }: any) {
     console.log('poolName:', poolName)
     console.log('elimuBalance:', elimuBalance)
 
-    if ((poolName == 'sushiswap') || (poolName == 'balancer')) {
-        return (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
-        )
+    let address : any = ''
+    let abi : any = undefined
+    if (poolName == 'uniswap') {
+        address = '0x6ba828e01713cef8ab59b64198d963d0e42e0aea'
+        abi = UniswapPoolRewards.abi
+    } else if (poolName == 'sushiswap') {
+        // TODO
+    } else if (poolName == 'balancer') {
+        // TODO
     }
+    console.log('address:', address)
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
-        abi: UniswapPoolRewards.abi,
+        address: address,
+        abi: abi,
         functionName: 'rewardRatePerSecond'
     })
     console.log('data:', data)
@@ -31,6 +38,10 @@ export default function RewardDetails({ poolName, elimuBalance }: any) {
     if (!useIsMounted() || isLoading) {
         return (
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
+        )
+    } else if (!data) {
+        return (
+            <Alert severity="error">Error loading reward rate</Alert>
         )
     }
 

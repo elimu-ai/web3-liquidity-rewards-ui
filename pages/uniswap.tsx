@@ -11,15 +11,6 @@ import { ethers } from 'ethers'
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
 
-function ApproveButtonWrapper() {
-  console.log('ApproveButtonWrapper')
-  return (
-    <WagmiConfig config={config}>
-      <ApproveButton />
-    </WagmiConfig>
-  )
-}
-
 function ApproveButton() {
   console.log('ApproveButton')
 
@@ -60,16 +51,6 @@ function ApproveButton() {
         )}
       </div>
     </>
-  )
-}
-
-function DepositButtonWrapper({ depositAmount }: any) {
-  console.log('DepositButtonWrapper')
-  console.log('depositAmount:', depositAmount)
-  return (
-    <WagmiConfig config={config}>
-      <DepositButton depositAmount={depositAmount} />
-    </WagmiConfig>
   )
 }
 
@@ -122,108 +103,110 @@ function DepositButton({ depositAmount }: any) {
 export default function Uniswap() {
   console.log('Uniswap')
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
-      <Head>
-        <title>Liquidity Provider Rewards | elimu.ai</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <WagmiConfig config={config}>
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
+        <Head>
+          <title>Liquidity Provider Rewards | elimu.ai</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <Header />
+        <Header />
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-            Uniswap Liquidity Pool 🦄
-        </h1>
+        <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
+          <h1 className="text-6xl font-bold">
+              Uniswap Liquidity Pool 🦄
+          </h1>
 
-        <p className="mt-3 text-2xl">
-            Get started by connecting your Ethereum wallet ☝🏽
-        </p>
+          <p className="mt-3 text-2xl">
+              Get started by connecting your Ethereum wallet ☝🏽
+          </p>
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <div className='p-6'>
-              <h3 className="text-2xl font-bold">1. Provide Liquidity 💧</h3>
-              <p className='mt-4'>
-                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.uniswap.org/#/add/v2/ETH/0xe29797910D413281d2821D5d9a989262c8121CC2">Uniswap pool</a>
-                , and receive Uniswap pool tokens.
-              </p>
-            </div>
-            <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
-              <p>
-                Your current pool token balance:
-              </p>
-              <code className='text-lg'>
-                0.00 $UNI-V2
-              </code>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <div className='p-6'>
-              <h3 className="text-2xl font-bold">2. Deposit Pool Tokens ➕</h3>
-              <p className='mt-4'>Deposit your Uniswap pool tokens into the elimu.ai rewards smart contract to start earning rewards.</p>
-              <div className="input-group">
-                  <input
-                      id="depositInput"
-                      type="number"
-                      placeholder="Amount"
-                      className="input mt-4 w-full p-4 border border-solid border-gray-300 rounded"
-                      onChange={(event: any) => {
-                        console.log('onChange')
-                        const amount : Number = event.target.value
-                        console.log('amount:', amount)
-                        let depositButtonElement = (document.getElementById('depositButton') as HTMLButtonElement)
-                        // if (amount > 0) {
-                        //   depositButtonElement.disabled = false
-                        // } else {
-                        //   depositButtonElement.disabled = true
-                        // }
-                      }}
-                      />
-                  <ApproveButtonWrapper />
-                  <DepositButtonWrapper depositAmount={0.1} />
+          <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+            <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
+              <div className='p-6'>
+                <h3 className="text-2xl font-bold">1. Provide Liquidity 💧</h3>
+                <p className='mt-4'>
+                  Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.uniswap.org/#/add/v2/ETH/0xe29797910D413281d2821D5d9a989262c8121CC2">Uniswap pool</a>
+                  , and receive Uniswap pool tokens.
+                </p>
               </div>
-            </div>
-            <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
-              <p>
-                Your current pool token deposits:
-              </p>
-              <code className='text-lg'>
-                0.00 $UNI-V2
-              </code>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <div className='p-6'>
-              <h3 className="text-2xl font-bold">3. Claim Rewards 💎</h3>
-              <p className='mt-4'>...</p>
-            </div>
-            <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
-              <p>
-                Your claimable reward:
-              </p>
-              <code className='text-lg'>
-                0.00 $ELIMU
-              </code>
-              <div>
-                <button 
-                    id="claimButton"
-                    className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                    disabled>
-                  Claim rewards
-                </button>
+              <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
+                <p>
+                  Your current pool token balance:
+                </p>
+                <code className='text-lg'>
+                  0.00 $UNI-V2
+                </code>
               </div>
             </div>
           </div>
-        </div>
-      </main>
 
-      <Footer />
-    </div>
+          <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+            <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
+              <div className='p-6'>
+                <h3 className="text-2xl font-bold">2. Deposit Pool Tokens ➕</h3>
+                <p className='mt-4'>Deposit your Uniswap pool tokens into the elimu.ai rewards smart contract to start earning rewards.</p>
+                <div className="input-group">
+                    <input
+                        id="depositInput"
+                        type="number"
+                        placeholder="Amount"
+                        className="input mt-4 w-full p-4 border border-solid border-gray-300 rounded"
+                        onChange={(event: any) => {
+                          console.log('onChange')
+                          const amount : Number = event.target.value
+                          console.log('amount:', amount)
+                          let depositButtonElement = (document.getElementById('depositButton') as HTMLButtonElement)
+                          // if (amount > 0) {
+                          //   depositButtonElement.disabled = false
+                          // } else {
+                          //   depositButtonElement.disabled = true
+                          // }
+                        }}
+                        />
+                    <ApproveButton />
+                    <DepositButton depositAmount={0.1} />
+                </div>
+              </div>
+              <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
+                <p>
+                  Your current pool token deposits:
+                </p>
+                <code className='text-lg'>
+                  0.00 $UNI-V2
+                </code>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+            <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
+              <div className='p-6'>
+                <h3 className="text-2xl font-bold">3. Claim Rewards 💎</h3>
+                <p className='mt-4'>...</p>
+              </div>
+              <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
+                <p>
+                  Your claimable reward:
+                </p>
+                <code className='text-lg'>
+                  0.00 $ELIMU
+                </code>
+                <div>
+                  <button 
+                      id="claimButton"
+                      className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
+                      disabled>
+                    Claim rewards
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </WagmiConfig>
   )
 }

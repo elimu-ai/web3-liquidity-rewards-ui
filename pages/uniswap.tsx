@@ -8,6 +8,7 @@ import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
 import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
+import ClaimableReward from '../components/uniswap/ClaimableReward'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -195,7 +196,7 @@ export default function Uniswap() {
                   Your claimable reward:
                 </p>
                 <code className='text-lg'>
-                  0.00 $ELIMU
+                  <ClaimableReward address={address} />
                 </code>
                 <div>
                   <button 

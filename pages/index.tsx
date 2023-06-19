@@ -9,7 +9,9 @@ import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
-import RewardDetails from '../components/RewardDetails'
+import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
+import RewardDetailsSushiSwap from '../components/uniswap/RewardDetails'
+import RewardDetailsBalancer from '../components/uniswap/RewardDetails'
 import Image from 'next/image'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
@@ -97,7 +99,15 @@ function LiquidityPoolDetails({ poolName }: any) {
         <code>{ethBalanceDecimal.toFixed(2)} <Image className='inline-block' width={16} height={16} src='https://etherscan.io/token/images/weth_28.png' alt='$WETH' /> / {elimuBalanceDecimal.toLocaleString(undefined, {maximumFractionDigits: 0})} <Image className='inline-block' width={16} height={16} src='https://etherscan.io/token/images/elimuai_32.png' alt='$ELIMU' /></code>
       </p>
       <div className='mt-4 border-t pt-4'>
-        <RewardDetails poolName={poolName} elimuBalance={elimuBalanceDecimal} />
+        {(poolName == 'uniswap') && (
+          <RewardDetailsUniswap />
+        )}
+        {/* {(poolName == 'sushiswap') && (
+          <RewardDetailsSushiSwap />
+        )}
+        {(poolName == 'balancer') && (
+          <RewardDetailsBalancer />
+        )} */}
       </div> 
     </>
   )

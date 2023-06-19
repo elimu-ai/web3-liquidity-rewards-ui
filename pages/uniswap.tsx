@@ -9,6 +9,7 @@ import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
 import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
 import ClaimableReward from '../components/uniswap/ClaimableReward'
+import PoolTokenDeposits from '../components/uniswap/PoolTokenDeposits'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -179,7 +180,7 @@ export default function Uniswap() {
                   Your current pool token deposits:
                 </p>
                 <code className='text-lg'>
-                  0.00 $UNI-V2
+                  <PoolTokenDeposits address={address} />
                 </code>
               </div>
             </div>

@@ -2,11 +2,12 @@ import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { Alert } from '@mui/material'
-import { WagmiConfig, configureChains, useContractRead, usePrepareContractWrite, useContractWrite, mainnet, createConfig } from 'wagmi'
+import { WagmiConfig, configureChains, useContractRead, usePrepareContractWrite, useContractWrite, mainnet, createConfig, useAccount } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
 import { ethers } from 'ethers'
+import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -102,6 +103,10 @@ function DepositButton({ depositAmount }: any) {
 
 export default function Uniswap() {
   console.log('Uniswap')
+
+  const { address, isConnecting, isDisconnected } = useAccount()
+  console.log('address:', address)
+
   return (
     <WagmiConfig config={config}>
       <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
@@ -135,7 +140,7 @@ export default function Uniswap() {
                   Your current pool token balance:
                 </p>
                 <code className='text-lg'>
-                  0.00 $UNI-V2
+                  <PoolTokenBalance address={address} />
                 </code>
               </div>
             </div>

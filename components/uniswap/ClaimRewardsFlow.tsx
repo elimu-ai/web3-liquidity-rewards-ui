@@ -7,12 +7,15 @@ import Link from "next/link"
 function PrepareClaimReward({ address }: any) {
   console.log('PrepareClaimReward')
 
-  const { config: prepareConfig, error: prepareError, isError: prepareIsError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+  const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
     address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
     abi: UniswapPoolRewards.abi,
     functionName: 'claimReward'
   })
   console.log('prepareConfig:', prepareConfig)
+  console.log('prepareIsError:', prepareIsError)
+  console.log('prepareError:', prepareError)
+  console.log('prepareIsLoading:', prepareIsLoading)
 
   const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
   console.log('writeData:', writeData)
@@ -49,7 +52,7 @@ function PrepareClaimReward({ address }: any) {
         >
           Preparing...
         </button>
-        <Alert severity="error" className="mt-4 justify-center">Error preparing claim: {prepareError?.name}</Alert>
+        <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
       </>
     )
   } else {
@@ -93,7 +96,6 @@ function PrepareClaimReward({ address }: any) {
             <>
               Success! 🎉
               <Alert severity="success" className="mt-4 justify-center">
-                
                 <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
                   View on Etherscan
                 </Link>

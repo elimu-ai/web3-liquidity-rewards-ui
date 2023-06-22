@@ -10,8 +10,8 @@ import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
-import RewardDetailsSushiSwap from '../components/uniswap/RewardDetails'
-import RewardDetailsBalancer from '../components/uniswap/RewardDetails'
+// import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
+// import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])

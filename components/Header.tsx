@@ -21,6 +21,7 @@ import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useIsMounted } from "../hooks/useIsMounted"
 import Link from "next/link"
+import ElimuBalance from "./ElimuBalance"
 
 function Profile() {
   console.log('Profile')
@@ -41,7 +42,8 @@ function Profile() {
       addressOrEnsName = ensName
     }
     return (
-      <div>
+      <div className="bg-purple-100 rounded-full">
+        <code className="p-4 pl-6 pr-6"><ElimuBalance address={address} /></code>
         <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">{addressOrEnsName}</button>
       </div>
     )
@@ -59,7 +61,7 @@ export default function Header() {
             <Image src="/logo-208x208.png" alt="elimu.ai" width={50} height={50} />
           </Link>
         </div>
-        <div className='w-96 text-right'>
+        <div className='w-96 flex justify-end'>
           <Wallet />
         </div>
       </header>

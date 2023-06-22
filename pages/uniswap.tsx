@@ -11,6 +11,7 @@ import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
 import ClaimableReward from '../components/uniswap/ClaimableReward'
 import PoolTokenDeposits from '../components/uniswap/PoolTokenDeposits'
 import RewardDetails from '../components/uniswap/RewardDetails'
+import ClaimRewardsFlow from '../components/uniswap/ClaimRewardsFlow'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
@@ -202,13 +203,8 @@ export default function Uniswap() {
                 <code className='text-lg'>
                   <ClaimableReward address={address} />
                 </code>
-                <div>
-                  <button 
-                      id="claimButton"
-                      className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                      disabled>
-                    Claim rewards
-                  </button>
+                <div className='mt-4'>
+                  <ClaimRewardsFlow address={address} />
                 </div>
               </div>
             </div>

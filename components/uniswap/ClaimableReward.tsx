@@ -18,24 +18,14 @@ export default function ClaimableReward({ address }: any) {
     console.log('isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
-        return (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
-        )
+        return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else if (!address) {
-        return (
-            <>Connect Wallet ☝🏽</>
-        )
+        return <>Connect Wallet ☝🏽</>
     } else if (data == undefined) {
-        return (
-            <Alert severity="error">Error loading claimable reward</Alert>
-        )
+        return <Alert severity="error">Error loading claimable reward</Alert>
     } else {
         const claimableReward: BigNumberish = BigInt(Number(data))
         console.log('claimableReward:', claimableReward)
-        return (
-            <>
-                {Number(ethers.utils.formatUnits(claimableReward)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $ELIMU
-            </>
-        )
+        return <>{Number(ethers.utils.formatUnits(claimableReward)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $ELIMU</>
     }
 }

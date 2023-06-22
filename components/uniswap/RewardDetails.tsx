@@ -35,7 +35,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
                     Deposits: {depositReservesElimu.toLocaleString()} <code>$ELIMU</code> ({depositPercentage.toFixed(2)}%)
                 </p>
                 <p>
-                    Annual percentage yield): <b>{(Number(rewardRatePerMonthDecimal) * 12 * 100 / depositReservesElimu).toFixed(2)}%</b>
+                    Annual percentage yield: <b>{(Number(rewardRatePerMonthDecimal) * 12 * 100 / depositReservesElimu).toFixed(2)}%</b>
                 </p>
             </>
         )

@@ -91,7 +91,7 @@ function PrepareClaimReward({ address }: any) {
           </>
         ) : (
           !waitForTransactionIsSuccess ? (
-            <Alert severity="error" className="mt-4 justify-center">Error: {waitForTransactionError?.name}</Alert>
+            <Alert severity="error" className="mt-4 justify-center">Error: {waitForTransactionError?.message}</Alert>
           ) : (
             <>
               Success! 🎉
@@ -125,14 +125,12 @@ export default function ClaimRewardsFlow({ address }: any) {
     return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
   } else if (!address || (data == undefined)) {
     return (
-      <>
-        <button 
-            id="claimButton"
-            className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
-            disabled>
-          Claim rewards
-        </button>
-      </>
+      <button 
+          id="claimButton"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
+          disabled>
+        Claim rewards
+      </button>
     )
   } else {
     return <PrepareClaimReward address={address} />

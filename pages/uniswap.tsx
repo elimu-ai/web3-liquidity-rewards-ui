@@ -46,13 +46,13 @@ function ApproveButton() {
       </button>
       <div>
         {error && (
-          <Alert severity="error">{error.message}</Alert>
+          <Alert severity="error" className='mt-4 justify-center'>{error.message}</Alert>
         )}
         {isLoading && (
-          <Alert severity="info">Check Wallet</Alert>
+          <Alert severity="info" className='mt-4 justify-center'>Check Wallet</Alert>
         )}
         {isSuccess && (
-          <Alert severity="success">Transaction: {JSON.stringify(data)}</Alert>
+          <Alert severity="success" className='mt-4 justify-center'>Transaction: {JSON.stringify(data)}</Alert>
         )}
       </div>
     </>
@@ -92,13 +92,13 @@ function DepositButton({ depositAmount }: any) {
       </button>
       <div>
         {error && (
-          <Alert severity="error">Error: {error.message}</Alert>
+          <Alert severity="error" className='mt-4 justify-center'>Error: {error.message}</Alert>
         )}
         {isLoading && (
-          <Alert severity="info">Check wallet</Alert>
+          <Alert severity="info" className='mt-4 justify-center'>Check wallet</Alert>
         )}
         {isSuccess && (
-          <Alert severity="success">Success: {JSON.stringify(data)}</Alert>
+          <Alert severity="success" className='mt-4 justify-center'>Success: {JSON.stringify(data)}</Alert>
         )}
       </div>
     </>

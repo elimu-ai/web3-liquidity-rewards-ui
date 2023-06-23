@@ -27,7 +27,7 @@ export default function PoolTokenDeposits({ address }: any) {
         )
     } else if (data == undefined) {
         return (
-            <Alert severity="error">Error loading pool token deposits</Alert>
+            <Alert severity="error" className='mt-4 justify-center'>Error loading pool token deposits</Alert>
         )
     } else {
         const poolTokenDeposits: BigNumberish = BigInt(Number(data))

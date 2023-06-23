@@ -27,7 +27,7 @@ export default function PoolTokenBalance({ address }: any) {
         )
     } else if (data == undefined) {
         return (
-            <Alert severity="error">Error loading pool token balance</Alert>
+            <Alert severity="error" className='mt-4 justify-center'>Error loading pool token balance</Alert>
         )
     } else {
         const poolTokenBalance: BigNumberish = BigInt(Number(data))

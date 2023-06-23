@@ -22,7 +22,7 @@ export default function ClaimableReward({ address }: any) {
     } else if (!address) {
         return <>Connect Wallet ☝🏽</>
     } else if (data == undefined) {
-        return <Alert severity="error">Error loading claimable reward</Alert>
+        return <Alert severity="error" className='mt-4 justify-center'>Error loading claimable reward</Alert>
     } else {
         const claimableReward: BigNumberish = BigInt(Number(data))
         console.log('claimableReward:', claimableReward)

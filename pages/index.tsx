@@ -164,7 +164,7 @@ export default function Home() {
                 </div>
               </a>
               <a href="/sushiswap">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit SushiSwap pool tokens</button>
               </a>
             </div>
             
@@ -179,7 +179,7 @@ export default function Home() {
                 </div>
               </a>
               <a href="/balancer">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit Balancer pool tokens</button>
               </a>
             </div>
 
@@ -195,7 +195,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white mt-10 p-6 rounded-2xl w-full">
-              <h2 className="text-4xl">Total <code className="p-3 font-mono bg-gray-100 rounded-md">$WETH</code> Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
+              <h2 className="text-4xl">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
               <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/970563/1681039/4e64d66f-fada-4687-8410-2ee8dd31b126" width="100%" height="400"></iframe>
               <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/979280/1696305/0bbe44ba-afb6-4350-8e67-ff7d8a94e795" width="100%" height="400"></iframe>
               <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/963960/1672195/22529049-6e7d-4f84-bcc2-d68cd1fc0461" width="100%" height="400"></iframe>

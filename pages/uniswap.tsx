@@ -1,109 +1,17 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { Alert } from '@mui/material'
-import { WagmiConfig, configureChains, useContractRead, usePrepareContractWrite, useContractWrite, mainnet, createConfig, useAccount } from 'wagmi'
+import { WagmiConfig, configureChains, mainnet, createConfig, useAccount } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import UniswapV2Pair from '../abis/UniswapV2Pair.json'
-import UniswapPoolRewards from '../abis/UniswapPoolRewards.json'
-import { ethers } from 'ethers'
 import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
 import ClaimableReward from '../components/uniswap/ClaimableReward'
 import PoolTokenDeposits from '../components/uniswap/PoolTokenDeposits'
 import RewardDetails from '../components/uniswap/RewardDetails'
 import ClaimRewardsFlow from '../components/uniswap/ClaimRewardsFlow'
+import DepositPoolTokensFlow from '../components/uniswap/DepositPoolTokensFlow'
 
 const { publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({ autoConnect: true, publicClient })
-
-function ApproveButton() {
-  console.log('ApproveButton')
-
-  const { config, error } = usePrepareContractWrite({
-    address: '0x9936bdcd16e8c709c4cb8d7b871f0011b4cc65de',
-    abi: UniswapV2Pair.abi,
-    functionName: 'approve',
-    args: ['0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1', ethers.utils.parseUnits('1000')]
-  })
-
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    ...config,
-    onError(error) {
-      console.log('onError:\n', error)
-    },
-    onSuccess(data) {
-      console.log('onSuccess\n', data)
-    }
-  })
-  
-  return (
-    <>
-      <button 
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-          // disabled
-          onClick={() => write?.()}>
-        Approve UNI-V2 pool tokens
-      </button>
-      <div>
-        {error && (
-          <Alert severity="error" className='mt-4 justify-center'>{error.message}</Alert>
-        )}
-        {isLoading && (
-          <Alert severity="info" className='mt-4 justify-center'>Check Wallet</Alert>
-        )}
-        {isSuccess && (
-          <Alert severity="success" className='mt-4 justify-center'>Transaction: {JSON.stringify(data)}</Alert>
-        )}
-      </div>
-    </>
-  )
-}
-
-function DepositButton({ depositAmount }: any) {
-  console.log('DepositButton')
-
-  console.log('depositAmount:', depositAmount)
-
-  const { config, error } = usePrepareContractWrite({
-    address: '0x9ab3796159c939C2E3960Bd0D4D932C2697F24F1',
-    abi: UniswapPoolRewards.abi,
-    functionName: 'depositPoolTokens',
-    args: [ethers.utils.parseUnits(depositAmount.toString())]
-  })
-
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    ...config,
-    onError(error) {
-      console.log('onError:\n', error)
-    },
-    onSuccess(data) {
-      console.log('onSuccess\n', data)
-    }
-  })
-  
-  return (
-    <>
-      <button 
-          id="depositButton"
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-          disabled
-          onClick={() => write?.()}>
-        Deposit UNI-V2 pool tokens
-      </button>
-      <div>
-        {error && (
-          <Alert severity="error" className='mt-4 justify-center'>Error: {error.message}</Alert>
-        )}
-        {isLoading && (
-          <Alert severity="info" className='mt-4 justify-center'>Check wallet</Alert>
-        )}
-        {isSuccess && (
-          <Alert severity="success" className='mt-4 justify-center'>Success: {JSON.stringify(data)}</Alert>
-        )}
-      </div>
-    </>
-  )
-}
 
 export default function Uniswap() {
   console.log('Uniswap')
@@ -153,28 +61,10 @@ export default function Uniswap() {
           <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
             <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
               <div className='p-6'>
-                <h3 className="text-2xl font-bold">2. Deposit Pool Tokens ➕</h3>
+                <h3 className="text-2xl font-bold">2. Deposit Pool Tokens 📥</h3>
                 <p className='mt-4'>Deposit your Uniswap pool tokens into the elimu.ai rewards smart contract to start earning rewards.</p>
-                <div className="input-group">
-                    <input
-                        id="depositInput"
-                        type="number"
-                        placeholder="Amount"
-                        className="input mt-4 w-full p-4 border border-solid border-gray-300 rounded"
-                        onChange={(event: any) => {
-                          console.log('onChange')
-                          const amount : Number = event.target.value
-                          console.log('amount:', amount)
-                          let depositButtonElement = (document.getElementById('depositButton') as HTMLButtonElement)
-                          // if (amount > 0) {
-                          //   depositButtonElement.disabled = false
-                          // } else {
-                          //   depositButtonElement.disabled = true
-                          // }
-                        }}
-                        />
-                    <ApproveButton />
-                    <DepositButton depositAmount={0.1} />
+                <div className='mt-4'>
+                  <DepositPoolTokensFlow address={address} />
                 </div>
               </div>
               <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>

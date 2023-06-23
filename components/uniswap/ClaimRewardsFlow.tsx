@@ -137,12 +137,14 @@ export default function ClaimRewardsFlow({ address }: any) {
     const claimableReward: BigNumberish = BigInt(Number(data))
     console.log('claimableReward:', claimableReward)
     if (claimableReward == BigInt(0)) {
-      <button 
-          id="claimButton"
-          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
-          disabled>
-        Claim rewards
-      </button>
+      return (
+        <button 
+            id="claimButton"
+            className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
+            disabled>
+          Claim rewards
+        </button>
+      )
     } else {
       return <PrepareClaimReward address={address} />
     }

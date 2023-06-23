@@ -7,17 +7,70 @@ import Link from "next/link"
 import { BigNumberish, ethers } from "ethers"
 import { useState } from "react"
 
-function DepositButton() {
+function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
+    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+        address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
+        abi: UniswapPoolRewards.abi,
+        functionName: 'depositPoolTokens',
+        args: [amountGwei]
+    })
+    console.log('prepareConfig:', prepareConfig)
+    console.log('prepareIsError:', prepareIsError)
+    console.log('prepareError:', prepareError)
+    console.log('prepareIsLoading:', prepareIsLoading)
 
+    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    console.log('writeData:', writeData)
+    console.log('write:', write)
+    console.log('writeIsLoading:', writeIsLoading)
+    console.log('writeIsSuccess:', writeIsSuccess)
+
+    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransaction({
+        hash: writeData?.hash
+    })
+    console.log('waitForTransactionData:', waitForTransactionData)
+    console.log('waitForTransactionIsError:', waitForTransactionIsError)
+    console.log('waitForTransactionError:', waitForTransactionError)
+    console.log('waitForTransactionIsLoading:', waitForTransactionIsLoading)
+    console.log('waitForTransactionIsSuccess:', waitForTransactionIsSuccess)
 
     return (
-        <button 
-            id="depositButton"
-            className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50">
-                Deposit $UNI-V2 pool tokens
-        </button>
+        <>
+            <button 
+                id="depositButton"
+                className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
+                disabled={!write || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
+                onClick={() => write?.()}
+            >
+                {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
+                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
+                )} Deposit $UNI-V2 pool tokens
+            </button>
+            {prepareIsError && (
+                <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
+            )}
+            {writeIsLoading && (
+                <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
+            )}
+            {waitForTransactionIsLoading && (
+                <Alert severity="info" className="mt-4 justify-center">
+                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming transaction...<br />
+                    <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                        View on Etherscan
+                    </Link>
+                </Alert>
+            )}
+            {waitForTransactionIsSuccess && (
+                <Alert severity="success" className="mt-4 justify-center">
+                    Success! 🎉<br />
+                    <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                        View on Etherscan
+                    </Link>
+                </Alert>
+            )}
+        </>
     )
 }
 
@@ -50,6 +103,9 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('waitForTransactionIsLoading:', waitForTransactionIsLoading)
     console.log('waitForTransactionIsSuccess:', waitForTransactionIsSuccess)
 
+    if (waitForTransactionIsSuccess) {
+        return <DepositButton amountGwei={allowanceGwei} />
+    }
     return (
         <>
             <button 
@@ -113,7 +169,7 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
                 (allowanceGwei > currentAllowanceGwei) ? (
                     <AllowanceButton allowanceGwei={allowanceGwei} />
                 ) : (
-                    <DepositButton />
+                    <DepositButton amountGwei={allowanceGwei} />
                 )
             )}
         </>

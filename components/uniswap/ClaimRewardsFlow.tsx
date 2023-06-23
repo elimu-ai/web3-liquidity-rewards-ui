@@ -3,6 +3,7 @@ import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
 import Link from "next/link"
+import { BigNumberish } from "ethers"
 
 function PrepareClaimReward({ address }: any) {
   console.log('PrepareClaimReward')
@@ -84,7 +85,7 @@ function PrepareClaimReward({ address }: any) {
           <>
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming transaction...
             <Alert severity="info" className="mt-4 justify-center">
-              <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank'>
+              <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
                 View on Etherscan
               </Link>
             </Alert>
@@ -133,6 +134,17 @@ export default function ClaimRewardsFlow({ address }: any) {
       </button>
     )
   } else {
-    return <PrepareClaimReward address={address} />
+    const claimableReward: BigNumberish = BigInt(Number(data))
+    console.log('claimableReward:', claimableReward)
+    if (claimableReward == BigInt(0)) {
+      <button 
+          id="claimButton"
+          className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
+          disabled>
+        Claim rewards
+      </button>
+    } else {
+      return <PrepareClaimReward address={address} />
+    }
   }
 }

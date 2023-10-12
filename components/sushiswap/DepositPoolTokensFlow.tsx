@@ -181,10 +181,9 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
 
     // Lookup current pool token allowance
     const { data, isError, error, isLoading } = useContractRead({
-    address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-    abi: SushiSwapLPToken.abi,
-    functionName: 'allowance',
-    args: [address, '0x6ba828e01713cef8ab59b64198d963d0e42e0aea']
+        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+        functionName: 'allowance',
+        args: [address, '0x6ba828e01713cef8ab59b64198d963d0e42e0aea']
     })
     console.log('data:', data)
     console.log('isError:', isError)

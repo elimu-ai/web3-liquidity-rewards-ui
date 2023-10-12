@@ -10,7 +10,7 @@ import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
-// import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
+import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
 // import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
@@ -102,10 +102,10 @@ function LiquidityPoolDetails({ poolName }: any) {
         {(poolName == 'uniswap') && (
           <RewardDetailsUniswap />
         )}
-        {/* {(poolName == 'sushiswap') && (
+        {(poolName == 'sushiswap') && (
           <RewardDetailsSushiSwap />
         )}
-        {(poolName == 'balancer') && (
+        {/* {(poolName == 'balancer') && (
           <RewardDetailsBalancer />
         )} */}
       </div> 
@@ -164,7 +164,7 @@ export default function Home() {
                 </div>
               </a>
               <a href="/sushiswap">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit SushiSwap pool tokens</button>
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
               </a>
             </div>
             

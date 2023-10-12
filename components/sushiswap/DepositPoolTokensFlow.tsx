@@ -205,7 +205,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
 
     // Check if the address has any pool tokens available for deposit
     const { data, isError, error, isLoading } = useContractRead({
-        address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
+        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'balanceOf',
         args: [address]

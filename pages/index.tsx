@@ -10,7 +10,7 @@ import BalancerVault from '../abis/BalancerVault.json'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
-// import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
+import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
 // import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
@@ -102,10 +102,10 @@ function LiquidityPoolDetails({ poolName }: any) {
         {(poolName == 'uniswap') && (
           <RewardDetailsUniswap />
         )}
-        {/* {(poolName == 'sushiswap') && (
+        {(poolName == 'sushiswap') && (
           <RewardDetailsSushiSwap />
         )}
-        {(poolName == 'balancer') && (
+        {/* {(poolName == 'balancer') && (
           <RewardDetailsBalancer />
         )} */}
       </div> 
@@ -154,7 +154,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-              <a href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
+              <Link href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
                 <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
                 <p className="mt-4">
                   <code className="p-3 font-mono bg-gray-100 rounded-md">50% $WETH / 50% $ELIMU</code>
@@ -162,10 +162,10 @@ export default function Home() {
                 <div className='mt-4'>
                   <LiquidityPoolDetails poolName='sushiswap' />
                 </div>
-              </a>
-              <a href="/sushiswap">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit SushiSwap pool tokens</button>
-              </a>
+              </Link>
+              <Link href="/sushiswap">
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
+              </Link>
             </div>
             
             <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">

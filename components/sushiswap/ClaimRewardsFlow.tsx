@@ -113,7 +113,7 @@ export default function ClaimRewardsFlow({ address }: any) {
   console.log('ClaimRewardsFlow')
 
   const { data, isError, isLoading } = useContractRead({
-    address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
+    address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
     abi: SushiSwapPoolRewards.abi,
     functionName: 'claimableReward',
     args: [address]

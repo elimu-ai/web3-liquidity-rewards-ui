@@ -46,7 +46,7 @@ function DepositButton({ amountGwei }: any) {
             >
                 {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
-                )} Deposit $SLP pool tokens
+                )} Deposit $20WETH-80ELIMU pool tokens
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
@@ -116,7 +116,7 @@ function AllowanceButton({ allowanceGwei }: any) {
             >
                 {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
-                )} Approve $SLP allowance
+                )} Approve $20WETH-80ELIMU allowance
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
@@ -163,7 +163,7 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
                         id="depositButton"
                         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
                         disabled>
-                    Deposit $SLP pool tokens
+                    Deposit $20WETH-80ELIMU pool tokens
                 </button>
             ) : (
                 (allowanceGwei > currentAllowanceGwei) ? (
@@ -230,7 +230,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
                     id="depositButton"
                     className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
                     disabled>
-                    Deposit $SLP pool tokens
+                    Deposit $20WETH-80ELIMU pool tokens
                 </button>
             </>
         )
@@ -250,7 +250,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
                         id="depositButton"
                         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
                         disabled>
-                        Deposit $SLP pool tokens
+                        Deposit $20WETH-80ELIMU pool tokens
                     </button>
                 </>
             )

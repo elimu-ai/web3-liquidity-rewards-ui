@@ -34,7 +34,7 @@ export default function PoolTokenDeposits({ address }: any) {
         console.log('poolTokenDeposits:', poolTokenDeposits)
         return (
             <>
-                {Number(ethers.utils.formatUnits(poolTokenDeposits)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $SLP
+                {Number(ethers.utils.formatUnits(poolTokenDeposits)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $20WETH-80ELIMU
             </>
         )
     }

@@ -28,7 +28,7 @@ export default function PoolTokenBalance({ address }: any) {
         console.log('poolTokenBalance:', poolTokenBalance)
         return (
             <>
-                {Number(ethers.utils.formatUnits(poolTokenBalance)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $SLP
+                {Number(ethers.utils.formatUnits(poolTokenBalance)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $20WETH-80ELIMU
             </>
         )
     }

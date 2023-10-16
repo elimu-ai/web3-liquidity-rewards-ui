@@ -2,7 +2,7 @@ import { useContractRead } from 'wagmi'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 
 export default function PoolTokenDeposits({ address }: any) {
     console.log('PoolTokenDeposits')

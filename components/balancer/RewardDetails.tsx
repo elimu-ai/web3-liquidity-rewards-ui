@@ -1,9 +1,9 @@
 import { erc20ABI, useContractRead } from 'wagmi'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
-import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
+import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
     console.log('RewardRate')
@@ -46,8 +46,8 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
     console.log('LiquidityPoolReserves')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: SushiSwapLPToken.abi,
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
+        abi: BalancerWeightedPool.abi,
         functionName: 'getReserves'
     })
     console.log('data:', data)
@@ -73,7 +73,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
     console.log('PoolTokenDepositPercentage')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: erc20ABI,
         functionName: 'balanceOf',
         args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
@@ -97,7 +97,7 @@ function PoolTokenTotalSupply() {
     console.log('PoolTokenTotalSupply')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: erc20ABI,
         functionName: 'totalSupply'
     })

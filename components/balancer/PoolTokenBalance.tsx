@@ -1,15 +1,15 @@
 import { useContractRead } from 'wagmi'
-import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
+import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish, ethers } from 'ethers'
 
 export default function PoolTokenBalance({ address }: any) {
     console.log('PoolTokenBalance')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: SushiSwapLPToken.abi,
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
+        abi: BalancerWeightedPool.abi,
         functionName: 'balanceOf',
         args: [address]
     })

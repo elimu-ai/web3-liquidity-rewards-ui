@@ -1,10 +1,10 @@
 import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
-import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
+import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
 import Link from "next/link"
-import { BigNumberish, ethers } from "ethers"
+import { BigNumberish } from "ethers"
 import { useState } from "react"
 
 function DepositButton({ amountGwei }: any) {
@@ -78,8 +78,8 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('AllowanceButton')
 
     const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: SushiSwapLPToken.abi,
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
+        abi: BalancerWeightedPool.abi,
         functionName: 'approve',
         args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235', allowanceGwei]
     })
@@ -181,8 +181,8 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
 
     // Lookup current pool token allowance
     const { data, isError, error, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: SushiSwapLPToken.abi,
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
+        abi: BalancerWeightedPool.abi,
         functionName: 'allowance',
         args: [address, '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
     })
@@ -205,8 +205,8 @@ export default function DepositPoolTokensFlow({ address }: any) {
 
     // Check if the address has any pool tokens available for deposit
     const { data, isError, error, isLoading } = useContractRead({
-        address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: SushiSwapLPToken.abi,
+        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
+        abi: BalancerWeightedPool.abi,
         functionName: 'balanceOf',
         args: [address]
     })

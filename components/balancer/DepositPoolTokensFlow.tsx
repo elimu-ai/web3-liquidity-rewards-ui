@@ -11,7 +11,7 @@ function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
     const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
-        address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
+        address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'depositPoolTokens',
         args: [amountGwei]
@@ -81,7 +81,7 @@ function AllowanceButton({ allowanceGwei }: any) {
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'approve',
-        args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f', allowanceGwei]
+        args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235', allowanceGwei]
     })
     console.log('prepareConfig:', prepareConfig)
     console.log('prepareIsError:', prepareIsError)
@@ -184,7 +184,7 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'allowance',
-        args: [address, '0x92bC866Ff845a5050b3C642Dec94E5572305872f']
+        args: [address, '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
     })
     console.log('data:', data)
     console.log('isError:', isError)

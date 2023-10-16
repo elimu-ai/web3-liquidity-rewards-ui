@@ -9,7 +9,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
     console.log('RewardRate')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
+        address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
     })
@@ -76,7 +76,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: erc20ABI,
         functionName: 'balanceOf',
-        args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f']
+        args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
     })
     console.log('data:', data)
     console.log('isError:', isError)

@@ -9,7 +9,7 @@ function PrepareClaimReward({ address }: any) {
   console.log('PrepareClaimReward')
 
   const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
-    address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
+    address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
     abi: SushiSwapPoolRewards.abi,
     functionName: 'claimReward'
   })
@@ -113,7 +113,7 @@ export default function ClaimRewardsFlow({ address }: any) {
   console.log('ClaimRewardsFlow')
 
   const { data, isError, isLoading } = useContractRead({
-    address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
+    address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
     abi: SushiSwapPoolRewards.abi,
     functionName: 'claimableReward',
     args: [address]

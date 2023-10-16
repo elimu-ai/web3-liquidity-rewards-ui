@@ -1,5 +1,5 @@
 import { erc20ABI, useContractRead } from 'wagmi'
-import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
+import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -10,7 +10,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
-        abi: SushiSwapPoolRewards.abi,
+        abi: BalancerPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
     })
     console.log('data:', data)

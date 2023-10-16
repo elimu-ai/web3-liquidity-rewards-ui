@@ -1,5 +1,5 @@
 import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
-import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
+import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
 import Link from "next/link"
@@ -10,7 +10,7 @@ function PrepareClaimReward({ address }: any) {
 
   const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
     address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
-    abi: SushiSwapPoolRewards.abi,
+    abi: BalancerPoolRewards.abi,
     functionName: 'claimReward'
   })
   console.log('prepareConfig:', prepareConfig)
@@ -114,7 +114,7 @@ export default function ClaimRewardsFlow({ address }: any) {
 
   const { data, isError, isLoading } = useContractRead({
     address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
-    abi: SushiSwapPoolRewards.abi,
+    abi: BalancerPoolRewards.abi,
     functionName: 'claimableReward',
     args: [address]
   })

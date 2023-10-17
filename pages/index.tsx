@@ -178,9 +178,9 @@ export default function Home() {
                   <LiquidityPoolDetails poolName='balancer' />
                 </div>
               </Link>
-              <a href="/balancer">
+              <Link href="/balancer">
                 <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
-              </a>
+              </Link>
             </div>
 
             <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">

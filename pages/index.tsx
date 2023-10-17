@@ -179,7 +179,7 @@ export default function Home() {
                 </div>
               </Link>
               <a href="/balancer">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>Deposit Balancer pool tokens</button>
+                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
               </a>
             </div>
 

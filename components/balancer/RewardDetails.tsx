@@ -1,6 +1,6 @@
 import { erc20ABI, useContractRead } from 'wagmi'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
-import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
+import BalancerVault from '../../abis/BalancerVault.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
 import { BigNumberish, ethers } from 'ethers'
@@ -46,9 +46,10 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
     console.log('LiquidityPoolReserves')
 
     const { data, isError, isLoading } = useContractRead({
-        address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
-        abi: BalancerWeightedPool.abi,
-        functionName: 'getReserves'
+        address: '0xba12222222228d8ba445958a75a0704d566bf2c8',
+        abi: BalancerVault.abi,
+        functionName: 'getPoolTokens',
+        args: ['0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba']
     })
     console.log('data:', data)
     console.log('isError:', isError)
@@ -58,12 +59,12 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else if (data == undefined) {
         return <Alert severity="error">Error loading pool token reserves</Alert>
-    } else {
-        const poolReserves: any = data
-        let poolReservesElimu: BigNumberish = BigInt((0))
-        poolReservesElimu = poolReserves[1]
-        console.log('poolReservesElimu:', poolReservesElimu)
-        const poolReservesElimuDecimal: number = Number(ethers.utils.formatEther(poolReservesElimu))
+    } else {     
+        const poolTokenHoldings: any = data
+        let poolTokenHoldingsElimu: BigNumberish = BigInt((0))
+        poolTokenHoldingsElimu = poolTokenHoldings[1][1]
+        console.log('poolTokenHoldingsElimu:', poolTokenHoldingsElimu)
+        const poolReservesElimuDecimal: number = Number(ethers.utils.formatEther(poolTokenHoldingsElimu ))
         const depositReservesElimu = Math.round(poolReservesElimuDecimal * depositPercentage / 100)
         return <RewardRate depositPercentage={depositPercentage} depositReservesElimu={depositReservesElimu} />
     }

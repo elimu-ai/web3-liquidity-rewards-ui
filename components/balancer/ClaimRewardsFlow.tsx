@@ -18,10 +18,10 @@ function PrepareClaimReward({ address }: any) {
   console.log('prepareError:', prepareError)
   console.log('prepareIsLoading:', prepareIsLoading)
 
-  const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
+  const { data: writeData, writeContract, isPending: writeIsPending, isSuccess: writeIsSuccess } = useWriteContract()
   console.log('writeData:', writeData)
   console.log('writeContract:', writeContract)
-  console.log('writeIsLoading:', writeIsLoading)
+  console.log('writeIsPending:', writeIsPending)
   console.log('writeIsSuccess:', writeIsSuccess)
 
   const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
@@ -59,7 +59,7 @@ function PrepareClaimReward({ address }: any) {
   } else {
     return (
       !writeIsSuccess ? (
-        (simulateData && !writeIsLoading) ? (
+        (simulateData && !writeIsPending) ? (
           <button 
               id="claimButton"
               className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"

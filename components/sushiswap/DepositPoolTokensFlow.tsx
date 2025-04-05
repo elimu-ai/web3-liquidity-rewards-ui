@@ -21,10 +21,10 @@ function DepositButton({ amountGwei }: any) {
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
+    const { data: writeData, writeContract, isPending: writeIsPending, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
     console.log('writeContract:', writeContract)
-    console.log('writeIsLoading:', writeIsLoading)
+    console.log('writeIsPending:', writeIsPending)
     console.log('writeIsSuccess:', writeIsSuccess)
 
     const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
@@ -41,17 +41,17 @@ function DepositButton({ amountGwei }: any) {
             <button 
                 id="depositButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!simulateData?.request || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
                 onClick={() => writeContract(simulateData!.request)}
             >
-                {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
+                {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
                 )} Deposit $SLP pool tokens
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
             )}
-            {writeIsLoading && (
+            {writeIsPending && (
                 <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
             )}
             {waitForTransactionIsLoading && (
@@ -88,10 +88,10 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
+    const { data: writeData, writeContract, isPending: writeIsPending, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
     console.log('writeContract:', writeContract)
-    console.log('writeIsLoading:', writeIsLoading)
+    console.log('writeIsPending:', writeIsPending)
     console.log('writeIsSuccess:', writeIsSuccess)
 
     const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
@@ -111,17 +111,17 @@ function AllowanceButton({ allowanceGwei }: any) {
             <button 
                 id="allowanceButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!simulateData?.request || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
                 onClick={() => writeContract(simulateData!.request)}
             >
-                {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
+                {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
                 )} Approve $SLP allowance
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
             )}
-            {writeIsLoading && (
+            {writeIsPending && (
                 <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
             )}
             {waitForTransactionIsLoading && (

@@ -1,4 +1,5 @@
-import { erc20ABI, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
+import { erc20Abi } from 'viem'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
@@ -74,7 +75,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f']
     })
@@ -98,7 +99,7 @@ function PoolTokenTotalSupply() {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'totalSupply'
     })
     console.log('[sushiswap] data:', data)

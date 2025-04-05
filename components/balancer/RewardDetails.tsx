@@ -1,4 +1,5 @@
-import { erc20ABI, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
+import { erc20Abi } from 'viem'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import BalancerVault from '../../abis/BalancerVault.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
@@ -75,7 +76,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
     })
@@ -99,7 +100,7 @@ function PoolTokenTotalSupply() {
 
     const { data, isError, error, isLoading } = useContractRead({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'totalSupply'
     })
     console.log('[balancer] data:', data)

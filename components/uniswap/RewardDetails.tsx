@@ -1,4 +1,5 @@
-import { erc20ABI, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
+import { erc20Abi } from 'viem'
 import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import UniswapV2Pair from '../../abis/UniswapV2Pair.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
@@ -74,7 +75,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: ['0x6ba828e01713cef8ab59b64198d963d0e42e0aea']
     })
@@ -98,7 +99,7 @@ function PoolTokenTotalSupply() {
 
     const { data, isError, isLoading } = useContractRead({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'totalSupply'
     })
     console.log('[uniswap] data:', data)

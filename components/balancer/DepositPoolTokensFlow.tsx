@@ -41,8 +41,8 @@ function DepositButton({ amountGwei }: any) {
             <button 
                 id="depositButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!write || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
-                onClick={() => write?.()}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
+                onClick={() => writeContract(simulateData!.request)}
             >
                 {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>

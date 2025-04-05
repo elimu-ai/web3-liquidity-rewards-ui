@@ -21,9 +21,9 @@ function DepositButton({ amountGwei }: any) {
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract(simulateData)
+    const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
-    console.log('write:', write)
+    console.log('writeContract:', writeContract)
     console.log('writeIsLoading:', writeIsLoading)
     console.log('writeIsSuccess:', writeIsSuccess)
 
@@ -41,8 +41,8 @@ function DepositButton({ amountGwei }: any) {
             <button 
                 id="depositButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!write || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
-                onClick={() => write?.()}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
+                onClick={() => writeContract(simulateData!.request)}
             >
                 {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
@@ -88,9 +88,9 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract(simulateData)
+    const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
-    console.log('write:', write)
+    console.log('writeContract:', writeContract)
     console.log('writeIsLoading:', writeIsLoading)
     console.log('writeIsSuccess:', writeIsSuccess)
 
@@ -111,8 +111,8 @@ function AllowanceButton({ allowanceGwei }: any) {
             <button 
                 id="allowanceButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!write || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
-                onClick={() => write?.()}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
+                onClick={() => writeContract(simulateData!.request)}
             >
                 {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>

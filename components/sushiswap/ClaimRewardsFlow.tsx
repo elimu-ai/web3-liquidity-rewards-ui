@@ -18,9 +18,9 @@ function PrepareClaimReward({ address }: any) {
   console.log('prepareError:', prepareError)
   console.log('prepareIsLoading:', prepareIsLoading)
 
-  const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract(simulateData)
+  const { data: writeData, writeContract, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract()
   console.log('writeData:', writeData)
-  console.log('write:', write)
+  console.log('writeContract:', writeContract)
   console.log('writeIsLoading:', writeIsLoading)
   console.log('writeIsSuccess:', writeIsSuccess)
 
@@ -59,12 +59,12 @@ function PrepareClaimReward({ address }: any) {
   } else {
     return (
       !writeIsSuccess ? (
-        (write && !writeIsLoading) ? (
+        (simulateData && !writeIsLoading) ? (
           <button 
               id="claimButton"
               className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
-              disabled={!write}
-              onClick={() => write()}
+              disabled={!simulateData.request}
+              onClick={() => writeContract(simulateData.request)}
           >
             Claim rewards
           </button>

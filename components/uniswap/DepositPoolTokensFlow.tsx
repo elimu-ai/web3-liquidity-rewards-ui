@@ -1,4 +1,4 @@
-import { useContractRead, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
+import { useReadContract, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import UniswapV2Pair from '../../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -180,7 +180,7 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('ReadAllowance')
 
     // Lookup current pool token allowance
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
     address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
     abi: UniswapV2Pair.abi,
     functionName: 'allowance',
@@ -204,7 +204,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
     console.log('DepositPoolTokensFlow')
 
     // Check if the address has any pool tokens available for deposit
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: UniswapV2Pair.abi,
         functionName: 'balanceOf',

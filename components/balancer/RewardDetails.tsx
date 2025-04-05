@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { erc20Abi } from 'viem'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import BalancerVault from '../../abis/BalancerVault.json'
@@ -9,7 +9,7 @@ import { BigNumberish, ethers } from 'ethers'
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
     console.log('[balancer] RewardRate')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
         abi: BalancerPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
@@ -46,7 +46,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 function LiquidityPoolReserves({ depositPercentage }: any) {
     console.log('[balancer] LiquidityPoolReserves')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xba12222222228d8ba445958a75a0704d566bf2c8',
         abi: BalancerVault.abi,
         functionName: 'getPoolTokens',
@@ -74,7 +74,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
 function PoolTokenDepositPercentage({ totalSupply }: any) {
     console.log('[balancer] PoolTokenDepositPercentage')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: erc20Abi,
         functionName: 'balanceOf',
@@ -98,7 +98,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 function PoolTokenTotalSupply() {
     console.log('[balancer] PoolTokenTotalSupply')
 
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: erc20Abi,
         functionName: 'totalSupply'

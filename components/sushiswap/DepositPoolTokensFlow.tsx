@@ -1,4 +1,4 @@
-import { useContractRead, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
+import { useReadContract, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -180,7 +180,7 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('ReadAllowance')
 
     // Lookup current pool token allowance
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'allowance',
@@ -204,7 +204,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
     console.log('DepositPoolTokensFlow')
 
     // Check if the address has any pool tokens available for deposit
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'balanceOf',

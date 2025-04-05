@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { erc20Abi } from 'viem'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
@@ -9,7 +9,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
     console.log('[sushiswap] RewardRate')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
@@ -46,7 +46,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 function LiquidityPoolReserves({ depositPercentage }: any) {
     console.log('[sushiswap] LiquidityPoolReserves')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'getReserves'
@@ -73,7 +73,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
 function PoolTokenDepositPercentage({ totalSupply }: any) {
     console.log('[sushiswap] PoolTokenDepositPercentage')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: erc20Abi,
         functionName: 'balanceOf',
@@ -97,7 +97,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 function PoolTokenTotalSupply() {
     console.log('[sushiswap] PoolTokenTotalSupply')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: erc20Abi,
         functionName: 'totalSupply'

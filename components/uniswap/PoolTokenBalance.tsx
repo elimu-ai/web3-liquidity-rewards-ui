@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import UniswapV2Pair from '../../abis/UniswapV2Pair.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -7,7 +7,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 export default function PoolTokenBalance({ address }: any) {
     console.log('PoolTokenBalance')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: UniswapV2Pair.abi,
         functionName: 'balanceOf',

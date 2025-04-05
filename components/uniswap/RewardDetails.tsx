@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { erc20Abi } from 'viem'
 import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import UniswapV2Pair from '../../abis/UniswapV2Pair.json'
@@ -9,7 +9,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
     console.log('[uniswap] RewardRate')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
         abi: UniswapPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
@@ -46,7 +46,7 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 function LiquidityPoolReserves({ depositPercentage }: any) {
     console.log('[uniswap] LiquidityPoolReserves')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: UniswapV2Pair.abi,
         functionName: 'getReserves'
@@ -73,7 +73,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
 function PoolTokenDepositPercentage({ totalSupply }: any) {
     console.log('[uniswap] PoolTokenDepositPercentage')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: erc20Abi,
         functionName: 'balanceOf',
@@ -97,7 +97,7 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
 function PoolTokenTotalSupply() {
     console.log('[uniswap] PoolTokenTotalSupply')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: erc20Abi,
         functionName: 'totalSupply'

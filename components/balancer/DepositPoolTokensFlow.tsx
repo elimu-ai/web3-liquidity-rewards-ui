@@ -1,4 +1,4 @@
-import { useContractRead, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
+import { useReadContract, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -180,7 +180,7 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('ReadAllowance')
 
     // Lookup current pool token allowance
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: BalancerWeightedPool.abi,
         functionName: 'allowance',
@@ -204,7 +204,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
     console.log('DepositPoolTokensFlow')
 
     // Check if the address has any pool tokens available for deposit
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: BalancerWeightedPool.abi,
         functionName: 'balanceOf',

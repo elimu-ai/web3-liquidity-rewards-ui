@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -7,7 +7,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 export default function PoolTokenBalance({ address }: any) {
     console.log('PoolTokenBalance')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'balanceOf',

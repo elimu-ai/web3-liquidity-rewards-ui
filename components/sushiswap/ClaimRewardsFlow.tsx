@@ -1,4 +1,4 @@
-import { useContractRead, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
+import { useReadContract, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
@@ -112,7 +112,7 @@ function PrepareClaimReward({ address }: any) {
 export default function ClaimRewardsFlow({ address }: any) {
   console.log('ClaimRewardsFlow')
 
-  const { data, isError, isLoading } = useContractRead({
+  const { data, isError, isLoading } = useReadContract({
     address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
     abi: SushiSwapPoolRewards.abi,
     functionName: 'claimableReward',

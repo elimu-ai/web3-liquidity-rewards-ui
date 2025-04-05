@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, useContractRead, http, createConfig } from 'wagmi'
+import { WagmiConfig, useReadContract, http, createConfig } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
@@ -50,7 +50,7 @@ function LiquidityPoolDetails({ poolName }: any) {
     args = ['0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba']
   }
 
-  const { data, isError, isLoading } = useContractRead({
+  const { data, isError, isLoading } = useReadContract({
     address: address,
     abi: abi,
     functionName: functionName,

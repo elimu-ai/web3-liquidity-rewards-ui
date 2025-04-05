@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -7,7 +7,7 @@ import { BigNumberish, ethers } from 'ethers'
 export default function PoolTokenBalance({ address }: any) {
     console.log('PoolTokenBalance')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
         abi: BalancerWeightedPool.abi,
         functionName: 'balanceOf',

@@ -6,16 +6,16 @@ import { Alert } from '@mui/material'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
-    console.log('RewardRate')
+    console.log('[sushiswap] RewardRate')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[sushiswap] data:', data)
+    console.log('[sushiswap] isError:', isError)
+    console.log('[sushiswap] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -23,9 +23,9 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
         return <Alert severity="error">Error loading reward rate</Alert>
     } else {
         const rewardRatePerMonth: BigNumberish = BigInt(Number(data) * 60 * 60 * 24 * 30)
-        console.log('rewardRatePerMonth:', rewardRatePerMonth)
+        console.log('[sushiswap] rewardRatePerMonth:', rewardRatePerMonth)
         const rewardRatePerMonthDecimal: string = ethers.utils.formatUnits(rewardRatePerMonth)
-        console.log('rewardRatePerMonthDecimal:', rewardRatePerMonthDecimal)
+        console.log('[sushiswap] rewardRatePerMonthDecimal:', rewardRatePerMonthDecimal)
         return (
             <>
                 <p>
@@ -43,16 +43,16 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 }
 
 function LiquidityPoolReserves({ depositPercentage }: any) {
-    console.log('LiquidityPoolReserves')
+    console.log('[sushiswap] LiquidityPoolReserves')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'getReserves'
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[sushiswap] data:', data)
+    console.log('[sushiswap] isError:', isError)
+    console.log('[sushiswap] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -62,7 +62,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
         const poolReserves: any = data
         let poolReservesElimu: BigNumberish = BigInt((0))
         poolReservesElimu = poolReserves[1]
-        console.log('poolReservesElimu:', poolReservesElimu)
+        console.log('[sushiswap] poolReservesElimu:', poolReservesElimu)
         const poolReservesElimuDecimal: number = Number(ethers.utils.formatEther(poolReservesElimu))
         const depositReservesElimu = Math.round(poolReservesElimuDecimal * depositPercentage / 100)
         return <RewardRate depositPercentage={depositPercentage} depositReservesElimu={depositReservesElimu} />
@@ -70,7 +70,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
 }
 
 function PoolTokenDepositPercentage({ totalSupply }: any) {
-    console.log('PoolTokenDepositPercentage')
+    console.log('[sushiswap] PoolTokenDepositPercentage')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
@@ -78,9 +78,9 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
         functionName: 'balanceOf',
         args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f']
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[sushiswap] data:', data)
+    console.log('[sushiswap] isError:', isError)
+    console.log('[sushiswap] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -88,22 +88,22 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
         return <Alert severity="error">Error loading balance of pool token deposits</Alert>
     } else {
         const depositPercentage = Number(data) * 100 / Number(totalSupply)
-        console.log('depositPercentage:', depositPercentage)
+        console.log('[sushiswap] depositPercentage:', depositPercentage)
         return <LiquidityPoolReserves depositPercentage={depositPercentage} />
     }
 }
 
 function PoolTokenTotalSupply() {
-    console.log('PoolTokenTotalSupply')
+    console.log('[sushiswap] PoolTokenTotalSupply')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: erc20ABI,
         functionName: 'totalSupply'
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[sushiswap] data:', data)
+    console.log('[sushiswap] isError:', isError)
+    console.log('[sushiswap] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -115,7 +115,7 @@ function PoolTokenTotalSupply() {
 }
 
 export default function RewardDetails() {
-    console.log('RewardDetails')
+    console.log('[sushiswap] RewardDetails')
 
     return <PoolTokenTotalSupply />
 }

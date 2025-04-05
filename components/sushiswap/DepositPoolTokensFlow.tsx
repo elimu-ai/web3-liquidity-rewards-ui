@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
+import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransaction } from "wagmi"
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -10,18 +10,18 @@ import { useState } from "react"
 function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'depositPoolTokens',
         args: [amountGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
     console.log('writeData:', writeData)
     console.log('write:', write)
     console.log('writeIsLoading:', writeIsLoading)
@@ -77,18 +77,18 @@ function DepositButton({ amountGwei }: any) {
 function AllowanceButton({ allowanceGwei }: any) {
     console.log('AllowanceButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'approve',
         args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f', allowanceGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
     console.log('writeData:', writeData)
     console.log('write:', write)
     console.log('writeIsLoading:', writeIsLoading)

@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
+import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransaction } from "wagmi"
 import UniswapV2Pair from '../../abis/UniswapV2Pair.json'
 import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -10,18 +10,18 @@ import { useState } from "react"
 function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
         abi: UniswapPoolRewards.abi,
         functionName: 'depositPoolTokens',
         args: [amountGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
     console.log('writeData:', writeData)
     console.log('write:', write)
     console.log('writeIsLoading:', writeIsLoading)
@@ -77,18 +77,18 @@ function DepositButton({ amountGwei }: any) {
 function AllowanceButton({ allowanceGwei }: any) {
     console.log('AllowanceButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0xa0d230dca71a813c68c278ef45a7dac0e584ee61',
         abi: UniswapV2Pair.abi,
         functionName: 'approve',
         args: ['0x6ba828e01713cef8ab59b64198d963d0e42e0aea', allowanceGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
     console.log('writeData:', writeData)
     console.log('write:', write)
     console.log('writeIsLoading:', writeIsLoading)

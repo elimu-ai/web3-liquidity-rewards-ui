@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
+import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransaction } from "wagmi"
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
@@ -8,17 +8,17 @@ import { BigNumberish } from "ethers"
 function PrepareClaimReward({ address }: any) {
   console.log('PrepareClaimReward')
 
-  const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+  const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract  ({
     address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
     abi: BalancerPoolRewards.abi,
     functionName: 'claimReward'
   })
-  console.log('prepareConfig:', prepareConfig)
+  console.log('simulateData:', simulateData)
   console.log('prepareIsError:', prepareIsError)
   console.log('prepareError:', prepareError)
   console.log('prepareIsLoading:', prepareIsLoading)
 
-  const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+  const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
   console.log('writeData:', writeData)
   console.log('write:', write)
   console.log('writeIsLoading:', writeIsLoading)

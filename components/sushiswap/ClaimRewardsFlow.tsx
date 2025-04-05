@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
+import { useContractRead, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
@@ -18,7 +18,7 @@ function PrepareClaimReward({ address }: any) {
   console.log('prepareError:', prepareError)
   console.log('prepareIsLoading:', prepareIsLoading)
 
-  const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(simulateData)
+  const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useWriteContract(simulateData)
   console.log('writeData:', writeData)
   console.log('write:', write)
   console.log('writeIsLoading:', writeIsLoading)

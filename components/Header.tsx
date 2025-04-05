@@ -18,7 +18,7 @@ function Wallet() {
 }
 
 import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { injected } from 'wagmi/connectors'
 import { useIsMounted } from "../hooks/useIsMounted"
 import Link from "next/link"
 import ElimuBalance from "./ElimuBalance"

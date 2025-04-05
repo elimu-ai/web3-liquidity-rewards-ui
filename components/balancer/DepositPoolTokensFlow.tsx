@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransaction } from "wagmi"
+import { useContractRead, useContractWrite, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import BalancerWeightedPool from '../../abis/BalancerWeightedPool.json'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -27,7 +27,7 @@ function DepositButton({ amountGwei }: any) {
     console.log('writeIsLoading:', writeIsLoading)
     console.log('writeIsSuccess:', writeIsSuccess)
 
-    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransaction({
+    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
         hash: writeData?.hash
     })
     console.log('waitForTransactionData:', waitForTransactionData)
@@ -94,7 +94,7 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('writeIsLoading:', writeIsLoading)
     console.log('writeIsSuccess:', writeIsSuccess)
 
-    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransaction({
+    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
         hash: writeData?.hash
     })
     console.log('waitForTransactionData:', waitForTransactionData)

@@ -25,7 +25,7 @@ function PrepareClaimReward({ address }: any) {
   console.log('writeIsSuccess:', writeIsSuccess)
 
   const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
-    hash: writeData?.hash
+    hash: writeData
   })
   console.log('waitForTransactionData:', waitForTransactionData)
   console.log('waitForTransactionIsError:', waitForTransactionIsError)
@@ -85,7 +85,7 @@ function PrepareClaimReward({ address }: any) {
           <>
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming transaction...
             <Alert severity="info" className="mt-4 justify-center">
-              <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+              <Link href={`https://etherscan.io/tx/${writeData}`} target='_blank' className="text-purple-600">
                 View on Etherscan
               </Link>
             </Alert>
@@ -97,7 +97,7 @@ function PrepareClaimReward({ address }: any) {
             <>
               Success! 🎉
               <Alert severity="success" className="mt-4 justify-center">
-                <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                <Link href={`https://etherscan.io/tx/${writeData}`} target='_blank' className="text-purple-600">
                   View on Etherscan
                 </Link>
               </Alert>

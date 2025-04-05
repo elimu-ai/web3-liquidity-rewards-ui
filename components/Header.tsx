@@ -1,24 +1,8 @@
 import Image from "next/image"
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider, http, createConfig } from 'wagmi'
-import { mainnet } from 'wagmi/chains'
-
-const queryClient = new QueryClient();
-
-const config = createConfig({
-  chains: [mainnet], 
-  transports: { 
-    [mainnet.id]: http()
-  }
-})
 
 function Wallet() {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <Profile />
-      </QueryClientProvider>
-    </WagmiProvider>
+    <Profile />
   )
 }
 

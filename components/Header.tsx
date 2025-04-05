@@ -1,6 +1,9 @@
 import Image from "next/image"
-import { WagmiConfig, http, createConfig } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { WagmiProvider, http, createConfig } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
+
+const queryClient = new QueryClient();
 
 const config = createConfig({
   chains: [mainnet], 
@@ -11,9 +14,11 @@ const config = createConfig({
 
 function Wallet() {
   return (
-    <WagmiConfig config={config}>
-      <Profile />
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <Profile />
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 

@@ -49,6 +49,8 @@ function LiquidityPoolDetails({ poolName }: any) {
     args: args
   })
   console.log('data:', data)
+  console.log('isError:', isError)
+  console.log('isLoading:', isLoading)
 
   if (!useIsMounted() || isLoading) {
     return(
@@ -59,7 +61,8 @@ function LiquidityPoolDetails({ poolName }: any) {
   if (data != undefined) {
     let ethBalanceBigInt: BigNumberish = BigInt(0)
     let elimuBalanceBigInt: BigNumberish = BigInt(0)
-    let poolTokenHoldings: any[] = data
+    let poolTokenHoldings: any = []
+    poolTokenHoldings = data
     console.log('poolTokenHoldings:', poolTokenHoldings)
     if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
       ethBalanceBigInt = poolTokenHoldings[0]

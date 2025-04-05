@@ -2,8 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, configureChains, useContractRead, mainnet, createConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { WagmiConfig, useContractRead, http, createConfig } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
@@ -14,8 +14,12 @@ import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
 import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
-const { publicClient } = configureChains([mainnet], [publicProvider()])
-const config = createConfig({ autoConnect: true, publicClient })
+const config = createConfig({
+  chains: [mainnet], 
+  transports: { 
+    [mainnet.id]: http()
+  }
+})
 
 let ethBalanceUniswap = 0.00
 let ethBalanceSushiSwap = 0.00

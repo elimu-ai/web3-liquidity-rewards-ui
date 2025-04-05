@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, configureChains, mainnet, createConfig, useAccount } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { WagmiConfig, http, createConfig, useAccount } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 import PoolTokenBalance from '../components/uniswap/PoolTokenBalance'
 import ClaimableReward from '../components/uniswap/ClaimableReward'
 import PoolTokenDeposits from '../components/uniswap/PoolTokenDeposits'
@@ -10,8 +10,12 @@ import RewardDetails from '../components/uniswap/RewardDetails'
 import ClaimRewardsFlow from '../components/uniswap/ClaimRewardsFlow'
 import DepositPoolTokensFlow from '../components/uniswap/DepositPoolTokensFlow'
 
-const { publicClient } = configureChains([mainnet], [publicProvider()])
-const config = createConfig({ autoConnect: true, publicClient })
+const config = createConfig({
+  chains: [mainnet], 
+  transports: { 
+    [mainnet.id]: http()
+  }
+})
 
 export default function Uniswap() {
   console.log('Uniswap')

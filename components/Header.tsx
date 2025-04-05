@@ -1,12 +1,12 @@
 import Image from "next/image"
-import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { WagmiConfig, http, createConfig } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 
-const { chains, publicClient } = configureChains([mainnet], [publicProvider()])
 const config = createConfig({
-  autoConnect: true,
-  connectors: [new InjectedConnector({ chains })],
-  publicClient
+  chains: [mainnet], 
+  transports: { 
+    [mainnet.id]: http()
+  }
 })
 
 function Wallet() {

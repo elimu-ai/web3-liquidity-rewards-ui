@@ -1,4 +1,4 @@
-import { useContractRead, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi"
+import { useReadContract, useWriteContract, useSimulateContract, useWaitForTransactionReceipt } from "wagmi"
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
@@ -10,25 +10,25 @@ import { useState } from "react"
 function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'depositPoolTokens',
         args: [amountGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, writeContract, isPending: writeIsPending, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
-    console.log('write:', write)
-    console.log('writeIsLoading:', writeIsLoading)
+    console.log('writeContract:', writeContract)
+    console.log('writeIsPending:', writeIsPending)
     console.log('writeIsSuccess:', writeIsSuccess)
 
-    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransaction({
-        hash: writeData?.hash
+    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
+        hash: writeData
     })
     console.log('waitForTransactionData:', waitForTransactionData)
     console.log('waitForTransactionIsError:', waitForTransactionIsError)
@@ -41,23 +41,23 @@ function DepositButton({ amountGwei }: any) {
             <button 
                 id="depositButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!write || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
-                onClick={() => write?.()}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
+                onClick={() => writeContract(simulateData!.request)}
             >
-                {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
+                {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
                 )} Deposit $SLP pool tokens
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
             )}
-            {writeIsLoading && (
+            {writeIsPending && (
                 <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
             )}
             {waitForTransactionIsLoading && (
                 <Alert severity="info" className="mt-4 justify-center">
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming transaction...<br />
-                    <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                    <Link href={`https://etherscan.io/tx/${writeData}`} target='_blank' className="text-purple-600">
                         View on Etherscan
                     </Link>
                 </Alert>
@@ -65,7 +65,7 @@ function DepositButton({ amountGwei }: any) {
             {waitForTransactionIsSuccess && (
                 <Alert severity="success" className="mt-4 justify-center">
                     Success! 🎉<br />
-                    <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                    <Link href={`https://etherscan.io/tx/${writeData}`} target='_blank' className="text-purple-600">
                         View on Etherscan
                     </Link>
                 </Alert>
@@ -77,25 +77,25 @@ function DepositButton({ amountGwei }: any) {
 function AllowanceButton({ allowanceGwei }: any) {
     console.log('AllowanceButton')
 
-    const { config: prepareConfig, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = usePrepareContractWrite({
+    const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'approve',
         args: ['0x92bC866Ff845a5050b3C642Dec94E5572305872f', allowanceGwei]
     })
-    console.log('prepareConfig:', prepareConfig)
+    console.log('simulateData:', simulateData)
     console.log('prepareIsError:', prepareIsError)
     console.log('prepareError:', prepareError)
     console.log('prepareIsLoading:', prepareIsLoading)
 
-    const { data: writeData, write, isLoading: writeIsLoading, isSuccess: writeIsSuccess } = useContractWrite(prepareConfig)
+    const { data: writeData, writeContract, isPending: writeIsPending, isSuccess: writeIsSuccess } = useWriteContract()
     console.log('writeData:', writeData)
-    console.log('write:', write)
-    console.log('writeIsLoading:', writeIsLoading)
+    console.log('writeContract:', writeContract)
+    console.log('writeIsPending:', writeIsPending)
     console.log('writeIsSuccess:', writeIsSuccess)
 
-    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransaction({
-        hash: writeData?.hash
+    const { data: waitForTransactionData, isError: waitForTransactionIsError, error: waitForTransactionError, isLoading: waitForTransactionIsLoading, isSuccess: waitForTransactionIsSuccess } = useWaitForTransactionReceipt({
+        hash: writeData
     })
     console.log('waitForTransactionData:', waitForTransactionData)
     console.log('waitForTransactionIsError:', waitForTransactionIsError)
@@ -111,23 +111,23 @@ function AllowanceButton({ allowanceGwei }: any) {
             <button 
                 id="allowanceButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
-                disabled={!write || prepareIsLoading || writeIsLoading || waitForTransactionIsLoading}
-                onClick={() => write?.()}
+                disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
+                onClick={() => writeContract(simulateData!.request)}
             >
-                {(prepareIsLoading || writeIsLoading || waitForTransactionIsLoading) && (
+                {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
                 )} Approve $SLP allowance
             </button>
             {prepareIsError && (
                 <Alert severity="error" className="mt-4 justify-center">Error: {prepareError?.message}</Alert>
             )}
-            {writeIsLoading && (
+            {writeIsPending && (
                 <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
             )}
             {waitForTransactionIsLoading && (
                 <Alert severity="info" className="mt-4 justify-center">
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming transaction...<br />
-                    <Link href={`https://etherscan.io/tx/${writeData?.hash}`} target='_blank' className="text-purple-600">
+                    <Link href={`https://etherscan.io/tx/${writeData}`} target='_blank' className="text-purple-600">
                         View on Etherscan
                     </Link>
                 </Alert>
@@ -180,7 +180,7 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('ReadAllowance')
 
     // Lookup current pool token allowance
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'allowance',
@@ -204,7 +204,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
     console.log('DepositPoolTokensFlow')
 
     // Check if the address has any pool tokens available for deposit
-    const { data, isError, error, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x0E2a3d127EDf3BF328616E02F1DE47F981Cf496A',
         abi: SushiSwapLPToken.abi,
         functionName: 'balanceOf',

@@ -2,8 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { WagmiConfig, configureChains, useContractRead, mainnet, createConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
+import { useReadContract } from 'wagmi'
 import UniswapV2Pair from '../abis/UniswapV2Pair.json'
 import SushiSwapLPToken from '../abis/SushiSwapLPToken.json'
 import BalancerVault from '../abis/BalancerVault.json'
@@ -13,9 +12,6 @@ import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
 import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
 import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
-
-const { publicClient } = configureChains([mainnet], [publicProvider()])
-const config = createConfig({ autoConnect: true, publicClient })
 
 let ethBalanceUniswap = 0.00
 let ethBalanceSushiSwap = 0.00
@@ -46,13 +42,15 @@ function LiquidityPoolDetails({ poolName }: any) {
     args = ['0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba']
   }
 
-  const { data, isError, isLoading } = useContractRead({
+  const { data, isError, isLoading } = useReadContract({
     address: address,
     abi: abi,
     functionName: functionName,
     args: args
   })
   console.log('data:', data)
+  console.log('isError:', isError)
+  console.log('isLoading:', isLoading)
 
   if (!useIsMounted() || isLoading) {
     return(
@@ -63,7 +61,8 @@ function LiquidityPoolDetails({ poolName }: any) {
   if (data != undefined) {
     let ethBalanceBigInt: BigNumberish = BigInt(0)
     let elimuBalanceBigInt: BigNumberish = BigInt(0)
-    let poolTokenHoldings: any[] = data
+    let poolTokenHoldings: any = []
+    poolTokenHoldings = data
     console.log('poolTokenHoldings:', poolTokenHoldings)
     if ((poolName == 'uniswap') || (poolName == 'sushiswap')) {
       ethBalanceBigInt = poolTokenHoldings[0]
@@ -116,94 +115,92 @@ function LiquidityPoolDetails({ poolName }: any) {
 export default function Home() {
   console.log('Home')
   return (
-    <WagmiConfig config={config}>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
-        <Head>
-          <title>Liquidity Provider Rewards | elimu.ai</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
+      <Head>
+        <title>Liquidity Provider Rewards | elimu.ai</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <Header />
+      <Header />
 
-        <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-          <h1 className="text-6xl font-bold">
-            Rewards for {' '}
-            <a className="text-purple-600" href="https://etherscan.io/token/0xe29797910d413281d2821d5d9a989262c8121cc2">
-              $ELIMU
-            </a> LPs
-          </h1>
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
+        <h1 className="text-6xl font-bold">
+          Rewards for {' '}
+          <a className="text-purple-600" href="https://etherscan.io/token/0xe29797910d413281d2821d5d9a989262c8121cc2">
+            $ELIMU
+          </a> LPs
+        </h1>
 
-          <p className="mt-3 text-2xl">
-            Get started by connecting your Ethereum wallet ☝🏽
-          </p>
+        <p className="mt-3 text-2xl">
+          Get started by connecting your Ethereum wallet ☝🏽
+        </p>
 
-          <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-            <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-              <Link href="/uniswap" className="hover:text-purple-600 focus:text-purple-600">
-                <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
-                <p className="mt-4">
-                  <code className="p-3 font-mono bg-gray-100 rounded-md">50% $WETH / 50% $ELIMU</code>
-                </p>
-                <div className='mt-4'>
-                  <LiquidityPoolDetails poolName='uniswap' />
-                </div>
-              </Link>
-              <Link href="/uniswap">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Uniswap pool tokens</button>
-              </Link>
-            </div>
-
-            <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-              <Link href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
-                <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
-                <p className="mt-4">
-                  <code className="p-3 font-mono bg-gray-100 rounded-md">50% $WETH / 50% $ELIMU</code>
-                </p>
-                <div className='mt-4'>
-                  <LiquidityPoolDetails poolName='sushiswap' />
-                </div>
-              </Link>
-              <Link href="/sushiswap">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
-              </Link>
-            </div>
-            
-            <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-              <Link href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
-                <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
-                <p className="mt-4">
-                  <code className="p-3 font-mono bg-gray-100 rounded-md">20% $WETH / 80% $ELIMU</code>
-                </p>
-                <div className='mt-4'>
-                  <LiquidityPoolDetails poolName='balancer' />
-                </div>
-              </Link>
-              <Link href="/balancer">
-                <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
-              </Link>
-            </div>
-
-            <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
-              <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>
-              <p>
-                <a className="text-purple-600" href="https://etherscan.io/token/0xe29797910d413281d2821d5d9a989262c8121cc2">
-                  <code className="font-mono">$ELIMU</code>
-                </a> is the governance token used by the Ξlimu DAO. You can learn more at&nbsp;
-                <a href="https://github.com/elimu-ai/web3-wiki#readme" className="text-purple-600">https://github.com/elimu-ai/web3-wiki#readme</a>.
+        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
+            <Link href="/uniswap" className="hover:text-purple-600 focus:text-purple-600">
+              <h3 className="text-2xl font-bold">Uniswap Liquidity Pool 🦄</h3>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">50% $WETH / 50% $ELIMU</code>
               </p>
-            </div>
-
-            <div className="bg-white mt-10 p-6 rounded-2xl w-full">
-              <h2 className="text-4xl">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
-              <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305636/5536104" width="100%" height="400"></iframe>
-              <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305671/5536166" width="100%" height="400"></iframe>
-              <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305688/5536202" width="100%" height="400"></iframe>
-            </div>
+              <div className='mt-4'>
+                <LiquidityPoolDetails poolName='uniswap' />
+              </div>
+            </Link>
+            <Link href="/uniswap">
+              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Uniswap pool tokens</button>
+            </Link>
           </div>
-        </main>
 
-        <Footer />
-      </div>
-    </WagmiConfig>
+          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
+            <Link href="/sushiswap" className="hover:text-purple-600 focus:text-purple-600">
+              <h3 className="text-2xl font-bold">SushiSwap Liquidity Pool 🍣</h3>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">50% $WETH / 50% $ELIMU</code>
+              </p>
+              <div className='mt-4'>
+                <LiquidityPoolDetails poolName='sushiswap' />
+              </div>
+            </Link>
+            <Link href="/sushiswap">
+              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
+            </Link>
+          </div>
+          
+          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
+            <Link href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
+              <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
+              <p className="mt-4">
+                <code className="p-3 font-mono bg-gray-100 rounded-md">20% $WETH / 80% $ELIMU</code>
+              </p>
+              <div className='mt-4'>
+                <LiquidityPoolDetails poolName='balancer' />
+              </div>
+            </Link>
+            <Link href="/balancer">
+              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
+            </Link>
+          </div>
+
+          <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
+            <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>
+            <p>
+              <a className="text-purple-600" href="https://etherscan.io/token/0xe29797910d413281d2821d5d9a989262c8121cc2">
+                <code className="font-mono">$ELIMU</code>
+              </a> is the governance token used by the Ξlimu DAO. You can learn more at&nbsp;
+              <a href="https://github.com/elimu-ai/web3-wiki#readme" className="text-purple-600">https://github.com/elimu-ai/web3-wiki#readme</a>.
+            </p>
+          </div>
+
+          <div className="bg-white mt-10 p-6 rounded-2xl w-full">
+            <h2 className="text-4xl">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
+            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305636/5536104" width="100%" height="400"></iframe>
+            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305671/5536166" width="100%" height="400"></iframe>
+            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305688/5536202" width="100%" height="400"></iframe>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   )
 }

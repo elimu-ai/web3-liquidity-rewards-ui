@@ -1,24 +1,12 @@
 import Image from "next/image"
-import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-
-const { chains, publicClient } = configureChains([mainnet], [publicProvider()])
-const config = createConfig({
-  autoConnect: true,
-  connectors: [new InjectedConnector({ chains })],
-  publicClient
-})
 
 function Wallet() {
   return (
-    <WagmiConfig config={config}>
-      <Profile />
-    </WagmiConfig>
+    <Profile />
   )
 }
 
 import { useConnect, useAccount, useEnsName, useDisconnect } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useIsMounted } from "../hooks/useIsMounted"
 import Link from "next/link"
 import ElimuBalance from "./ElimuBalance"
@@ -44,11 +32,11 @@ function Profile() {
     return (
       <div className="bg-purple-100 rounded-full">
         <code className="p-4 pl-6 pr-6"><ElimuBalance address={address} /></code>
-        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">{addressOrEnsName}</button>
+        <button onClick={() => disconnect()} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white font-bold rounded-full p-4 pl-6 pr-6">{addressOrEnsName}</button>
       </div>
     )
   }
-  return <button onClick={() => connect({ connector: connectors[0] })} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white text-white font-bold rounded-full p-4 pl-6 pr-6">Connect Wallet</button>
+  return <button onClick={() => connect({ connector: connectors[0] })} className="bg-purple-200 hover:bg-purple-600 text-purple-800 hover:text-white font-bold rounded-full p-4 pl-6 pr-6">Connect Wallet</button>
 }
 
 export default function Header() {

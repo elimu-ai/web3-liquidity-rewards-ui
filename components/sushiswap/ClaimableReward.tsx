@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -7,7 +7,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 export default function ClaimableReward({ address }: any) {
     console.log('ClaimableReward')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x92bC866Ff845a5050b3C642Dec94E5572305872f',
         abi: SushiSwapPoolRewards.abi,
         functionName: 'claimableReward',

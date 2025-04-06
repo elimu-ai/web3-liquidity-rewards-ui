@@ -1,4 +1,5 @@
-import { erc20ABI, useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
+import { erc20Abi } from 'viem'
 import BalancerPoolRewards from '../../abis/BalancerPoolRewards.json'
 import BalancerVault from '../../abis/BalancerVault.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
@@ -6,16 +7,16 @@ import { Alert } from '@mui/material'
 import { BigNumberish, ethers } from 'ethers'
 
 function RewardRate({ depositPercentage, depositReservesElimu }: any) {
-    console.log('RewardRate')
+    console.log('[balancer] RewardRate')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235',
         abi: BalancerPoolRewards.abi,
         functionName: 'rewardRatePerSecond'
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[balancer] data:', data)
+    console.log('[balancer] isError:', isError)
+    console.log('[balancer] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -23,9 +24,9 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
         return <Alert severity="error">Error loading reward rate</Alert>
     } else {
         const rewardRatePerMonth: BigNumberish = BigInt(Number(data) * 60 * 60 * 24 * 30)
-        console.log('rewardRatePerMonth:', rewardRatePerMonth)
+        console.log('[balancer] rewardRatePerMonth:', rewardRatePerMonth)
         const rewardRatePerMonthDecimal: string = ethers.utils.formatUnits(rewardRatePerMonth)
-        console.log('rewardRatePerMonthDecimal:', rewardRatePerMonthDecimal)
+        console.log('[balancer] rewardRatePerMonthDecimal:', rewardRatePerMonthDecimal)
         return (
             <>
                 <p>
@@ -43,17 +44,17 @@ function RewardRate({ depositPercentage, depositReservesElimu }: any) {
 }
 
 function LiquidityPoolReserves({ depositPercentage }: any) {
-    console.log('LiquidityPoolReserves')
+    console.log('[balancer] LiquidityPoolReserves')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0xba12222222228d8ba445958a75a0704d566bf2c8',
         abi: BalancerVault.abi,
         functionName: 'getPoolTokens',
         args: ['0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba']
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[balancer] data:', data)
+    console.log('[balancer] isError:', isError)
+    console.log('[balancer] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -63,7 +64,7 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
         const poolTokenHoldings: any = data
         let poolTokenHoldingsElimu: BigNumberish = BigInt((0))
         poolTokenHoldingsElimu = poolTokenHoldings[1][1]
-        console.log('poolTokenHoldingsElimu:', poolTokenHoldingsElimu)
+        console.log('[balancer] poolTokenHoldingsElimu:', poolTokenHoldingsElimu)
         const poolReservesElimuDecimal: number = Number(ethers.utils.formatEther(poolTokenHoldingsElimu ))
         const depositReservesElimu = Math.round(poolReservesElimuDecimal * depositPercentage / 100)
         return <RewardRate depositPercentage={depositPercentage} depositReservesElimu={depositReservesElimu} />
@@ -71,11 +72,11 @@ function LiquidityPoolReserves({ depositPercentage }: any) {
 }
 
 function PoolTokenDepositPercentage({ totalSupply }: any) {
-    console.log('PoolTokenDepositPercentage')
+    console.log('[balancer] PoolTokenDepositPercentage')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: ['0x8A1d0924Bb0d9b4Aab6508263828cA26ca0dC235']
     })
@@ -89,22 +90,23 @@ function PoolTokenDepositPercentage({ totalSupply }: any) {
         return <Alert severity="error">Error loading balance of pool token deposits</Alert>
     } else {
         const depositPercentage = Number(data) * 100 / Number(totalSupply)
-        console.log('depositPercentage:', depositPercentage)
+        console.log('[balancer] depositPercentage:', depositPercentage)
         return <LiquidityPoolReserves depositPercentage={depositPercentage} />
     }
 }
 
 function PoolTokenTotalSupply() {
-    console.log('PoolTokenTotalSupply')
+    console.log('[balancer] PoolTokenTotalSupply')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, error, isLoading } = useReadContract({
         address: '0x517390b2B806cb62f20ad340DE6d98B2A8F17F2B',
-        abi: erc20ABI,
+        abi: erc20Abi,
         functionName: 'totalSupply'
     })
-    console.log('data:', data)
-    console.log('isError:', isError)
-    console.log('isLoading:', isLoading)
+    console.log('[balancer] data:', data)
+    console.log('[balancer] isError:', isError)
+    console.log('[balancer] error:', error)
+    console.log('[balancer] isLoading:', isLoading)
 
     if (!useIsMounted() || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
@@ -116,7 +118,7 @@ function PoolTokenTotalSupply() {
 }
 
 export default function RewardDetails() {
-    console.log('RewardDetails')
+    console.log('[balancer] RewardDetails')
 
     return <PoolTokenTotalSupply />
 }

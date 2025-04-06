@@ -1,4 +1,4 @@
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
@@ -7,7 +7,7 @@ import { BigNumber, BigNumberish, ethers } from 'ethers'
 export default function PoolTokenDeposits({ address }: any) {
     console.log('PoolTokenDeposits')
 
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading } = useReadContract({
         address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
         abi: UniswapPoolRewards.abi,
         functionName: 'poolTokenBalances',

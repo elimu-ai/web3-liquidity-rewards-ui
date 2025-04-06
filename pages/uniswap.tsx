@@ -57,7 +57,7 @@ return (
           <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
             <div className='p-6'>
               <h3 className="text-2xl font-bold">2. Deposit Pool Tokens 📥</h3>
-              <p className='mt-4'>Deposit your Uniswap pool tokens into the elimu.ai rewards smart contract to start earning rewards.</p>
+              <p className='mt-4'>Deposit your Uniswap pool tokens into the elimu.ai rewards <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://etherscan.io/address/0x6ba828e01713cef8ab59b64198d963d0e42e0aea#code">smart contract</a> to start earning rewards.</p>
               <div className='mt-4'>
                 <DepositPoolTokensFlow address={address} />
               </div>

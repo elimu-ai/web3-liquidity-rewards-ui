@@ -38,7 +38,7 @@ export default function SushiSwap() {
             <div className='p-6'>
               <h3 className="text-2xl font-bold">1. Provide Liquidity 💧</h3>
               <p className='mt-4'>
-                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.sushi.com/add/ETH/0xe29797910D413281d2821D5d9a989262c8121CC2">SushiSwap pool</a>
+                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://www.sushi.com/ethereum/pool/v2/0x0e2a3d127edf3bf328616e02f1de47f981cf496a">SushiSwap pool</a>
                 , and receive SushiSwap pool tokens.
               </p>
             </div>

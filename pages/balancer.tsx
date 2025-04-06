@@ -38,7 +38,7 @@ export default function Balancer() {
             <div className='p-6'>
               <h3 className="text-2xl font-bold">1. Provide Liquidity 💧</h3>
               <p className='mt-4'>
-                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.balancer.fi/#/ethereum/pool/0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba">Balancer pool</a>
+                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://balancer.fi/pools/ethereum/v2/0x517390b2b806cb62f20ad340de6d98b2a8f17f2b0002000000000000000001ba">Balancer pool</a>
                 , and receive Balancer pool tokens.
               </p>
             </div>

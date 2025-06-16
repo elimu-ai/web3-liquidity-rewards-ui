@@ -10,7 +10,6 @@ import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
 import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
-import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
 let ethBalanceUniswap = 0.00
@@ -103,9 +102,6 @@ function LiquidityPoolDetails({ poolName }: any) {
         )}
         {(poolName == 'sushiswap') && (
           <RewardDetailsSushiSwap />
-        )}
-        {(poolName == 'balancer') && (
-          <RewardDetailsBalancer />
         )}
       </div> 
     </>

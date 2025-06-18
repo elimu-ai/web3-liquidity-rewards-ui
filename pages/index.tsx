@@ -161,21 +161,6 @@ export default function Home() {
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
             </Link>
           </div>
-          
-          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <Link href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
-              <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
-              <p className="mt-4">
-                <code className="p-3 font-mono bg-gray-100 rounded-md">20% $WETH / 80% $ELIMU</code>
-              </p>
-              <div className='mt-4'>
-                <LiquidityPoolDetails poolName='balancer' />
-              </div>
-            </Link>
-            <Link href="/balancer">
-              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
-            </Link>
-          </div>
 
           <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
             <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>

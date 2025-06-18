@@ -176,7 +176,6 @@ export default function Home() {
             <h2 className="text-4xl">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305636/5536104" width="100%" height="400"></iframe>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305671/5536166" width="100%" height="400"></iframe>
-            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305688/5536202" width="100%" height="400"></iframe>
           </div>
         </div>
       </main>

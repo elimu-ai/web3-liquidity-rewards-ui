@@ -10,7 +10,6 @@ import { useIsMounted } from '../hooks/useIsMounted'
 import { BigNumberish, ethers } from 'ethers'
 import RewardDetailsUniswap from '../components/uniswap/RewardDetails'
 import RewardDetailsSushiSwap from '../components/sushiswap/RewardDetails'
-import RewardDetailsBalancer from '../components/balancer/RewardDetails'
 import Image from 'next/image'
 
 let ethBalanceUniswap = 0.00
@@ -104,9 +103,6 @@ function LiquidityPoolDetails({ poolName }: any) {
         {(poolName == 'sushiswap') && (
           <RewardDetailsSushiSwap />
         )}
-        {(poolName == 'balancer') && (
-          <RewardDetailsBalancer />
-        )}
       </div> 
     </>
   )
@@ -165,21 +161,6 @@ export default function Home() {
               <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit SushiSwap pool tokens</button>
             </Link>
           </div>
-          
-          <div className="bg-white p-6 mt-6 border w-96 rounded-2xl drop-shadow-md">
-            <Link href="/balancer" className="hover:text-purple-600 focus:text-purple-600">
-              <h3 className="text-2xl font-bold">Balancer Liquidity Pool ⚖️</h3>
-              <p className="mt-4">
-                <code className="p-3 font-mono bg-gray-100 rounded-md">20% $WETH / 80% $ELIMU</code>
-              </p>
-              <div className='mt-4'>
-                <LiquidityPoolDetails poolName='balancer' />
-              </div>
-            </Link>
-            <Link href="/balancer">
-              <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4">Deposit Balancer pool tokens</button>
-            </Link>
-          </div>
 
           <div className=" bg-white p-6 mt-6 border w-96 rounded-2xl text-left">
             <h3 className="font-bold">What is <code>$ELIMU</code>? 💎</h3>
@@ -195,7 +176,6 @@ export default function Home() {
             <h2 className="text-4xl">Total Liquidity: <b id="totalLiquidityAmount">Loading...</b></h2>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305636/5536104" width="100%" height="400"></iframe>
             <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305671/5536166" width="100%" height="400"></iframe>
-            <iframe className="mt-6 border-t pt-6" src="https://dune.com/embeds/3305688/5536202" width="100%" height="400"></iframe>
           </div>
         </div>
       </main>

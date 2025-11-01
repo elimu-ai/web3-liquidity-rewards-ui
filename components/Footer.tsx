@@ -4,7 +4,7 @@ export default function Footer() {
     <>
     <footer className="flex flex-col items-center justify-center w-full py-6 border-t mt-10 ">
       <div className="text-sm">
-        Made with <span aria-hidden>💜</span> by&nbsp;
+        Made with <span aria-hidden="true">💜</span> by&nbsp;
         <a
           href="https://elimu.ai"
           target="_blank"

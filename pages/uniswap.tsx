@@ -38,7 +38,7 @@ return (
             <div className='p-6'>
               <h3 className="text-2xl font-bold">1. Provide Liquidity 💧</h3>
               <p className='mt-4'>
-                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.uniswap.org/add/v2/ETH/0xe29797910D413281d2821D5d9a989262c8121CC2">Uniswap pool</a>
+                Provide liquidity to the <a className="font-bold text-purple-600" target="_blank" rel="noreferrer" href="https://app.uniswap.org/positions/create/v2?currencyA=NATIVE&currencyB=0xe29797910d413281d2821d5d9a989262c8121cc2">Uniswap pool</a>
                 , and receive Uniswap pool tokens.
               </p>
             </div>

@@ -8,6 +8,7 @@ import PoolTokenDeposits from '../components/sushiswap/PoolTokenDeposits'
 import RewardDetails from '../components/sushiswap/RewardDetails'
 import ClaimRewardsFlow from '../components/sushiswap/ClaimRewardsFlow'
 import DepositPoolTokensFlow from '../components/sushiswap/DepositPoolTokensFlow'
+import WithdrawPoolTokensFlow from '../components/sushiswap/WithdrawPoolTokensFlow'
 
 export default function SushiSwap() {
   console.log('SushiSwap')
@@ -90,6 +91,20 @@ export default function SushiSwap() {
               </code>
               <div className='mt-4'>
                 <ClaimRewardsFlow address={address} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+          <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
+            <div className='p-6'>
+              <h3 className="text-2xl font-bold">4. Withdraw Pool Tokens 🏧</h3>
+              <p className='mt-4'>
+                Withdraw your deposited SushiSwap pool tokens. Optionally claim rewards in the same transaction.
+              </p>
+              <div className='mt-4'>
+                <WithdrawPoolTokensFlow address={address} />
               </div>
             </div>
           </div>

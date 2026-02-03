@@ -217,7 +217,8 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     if (!isMounted || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else {
-        const allowance: BigNumberish = BigInt(data.toString())
+        const rawAllowance = data as BigNumberish
+        const allowance: BigNumberish = BigInt(rawAllowance.toString())
         console.log('allowance:', allowance)
         return <InputDepositAmount address={address} poolTokenBalance={poolTokenBalance} currentAllowanceGwei={allowance} />
     }

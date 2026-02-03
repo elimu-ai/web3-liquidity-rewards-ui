@@ -12,6 +12,7 @@ type WithdrawButtonProps = {
   label: string
 }
 
+/** Render a single Uniswap withdraw action button with status feedback. */
 function WithdrawButton({ functionName, label }: WithdrawButtonProps) {
   const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
     address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
@@ -30,12 +31,20 @@ function WithdrawButton({ functionName, label }: WithdrawButtonProps) {
     hash: writeData
   })
 
+  /** Trigger the withdraw write only when the simulation produced a request. */
+  const handleClick = () => {
+    if (!simulateData?.request) {
+      return
+    }
+    writeContract(simulateData.request)
+  }
+
   return (
     <>
       <button
         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
         disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
-        onClick={() => writeContract(simulateData!.request)}
+        onClick={handleClick}
       >
         {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
           <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
@@ -72,7 +81,9 @@ function WithdrawButton({ functionName, label }: WithdrawButtonProps) {
   )
 }
 
+/** Render Uniswap withdraw actions based on the connected wallet balance. */
 export default function WithdrawPoolTokensFlow({ address }: any) {
+  const isMounted = useIsMounted()
   const { data, isError, isLoading } = useReadContract({
     address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
     abi: UniswapPoolRewards.abi,
@@ -80,7 +91,7 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
     args: [address]
   })
 
-  if (!useIsMounted() || isLoading) {
+  if (!isMounted || isLoading) {
     return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
   }
 
@@ -97,7 +108,7 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
     )
   }
 
-  const poolTokenDeposits: BigNumberish = BigInt(Number(data))
+  const poolTokenDeposits: BigNumberish = BigInt(data.toString())
   if (poolTokenDeposits == BigInt(0)) {
     return (
       <>

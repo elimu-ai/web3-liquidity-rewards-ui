@@ -99,10 +99,24 @@ export default function SushiSwap() {
         <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
           <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
             <div className='p-6'>
-              <h3 className="text-2xl font-bold">4. Withdraw Pool Tokens 🏧</h3>
+              <h3 className="text-2xl font-bold">4. Withdraw Pool Tokens 📤</h3>
               <p className='mt-4'>
-                Withdraw your deposited SushiSwap pool tokens. Optionally claim rewards in the same transaction.
+                Withdraw your deposited SushiSwap pool tokens.
               </p>
+            </div>
+            <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
+              <p>
+                Your claimable reward:
+              </p>
+              <code className='text-lg'>
+                <ClaimableReward address={address} />
+              </code>
+              <p className='mt-4'>
+                Your current pool token deposits:
+              </p>
+              <code className='text-lg'>
+                <PoolTokenDeposits address={address} />
+              </code>
               <div className='mt-4'>
                 <WithdrawPoolTokensFlow address={address} />
               </div>

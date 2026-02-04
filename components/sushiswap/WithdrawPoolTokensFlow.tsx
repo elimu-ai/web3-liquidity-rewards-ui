@@ -42,6 +42,7 @@ function WithdrawButton({ functionName, label }: WithdrawButtonProps) {
   return (
     <>
       <button
+        id="withdrawButton"
         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
         disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
         onClick={handleClick}
@@ -98,7 +99,7 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
   if (!address || data == undefined || isError) {
     return (
       <>
-        <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
+        <button id="withdrawButton" className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50" disabled>
           Withdraw pool tokens
         </button>
       </>
@@ -109,7 +110,7 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
   if (poolTokenDeposits == BigInt(0)) {
     return (
       <>
-        <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
+        <button id="withdrawButton" className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50" disabled>
           Withdraw pool tokens
         </button>
       </>

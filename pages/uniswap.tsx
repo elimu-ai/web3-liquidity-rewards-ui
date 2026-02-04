@@ -100,12 +100,12 @@ return (
           <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
             <div className='p-6'>
               <h3 className="text-2xl font-bold">4. Withdraw Pool Tokens 📤</h3>
-              <p className='mt-4'>
-                Withdraw your deposited Uniswap pool tokens.
-              </p>
+              <div className='mt-4'>
+                <p>Withdraw your deposited Uniswap pool tokens.</p>
+              </div>
             </div>
             <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
-              <p className='mt-4'>
+              <p>
                 Your current pool token deposits:
               </p>
               <code className='text-lg'>

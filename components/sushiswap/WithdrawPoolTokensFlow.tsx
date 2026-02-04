@@ -43,7 +43,7 @@ function WithdrawButton({ functionName, label }: WithdrawButtonProps) {
     <>
       <button
         id="withdrawButton"
-        className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
+        className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
         disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
         onClick={handleClick}
       >

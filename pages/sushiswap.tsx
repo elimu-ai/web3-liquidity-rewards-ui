@@ -105,12 +105,6 @@ export default function SushiSwap() {
               </p>
             </div>
             <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
-              <p>
-                Your claimable reward:
-              </p>
-              <code className='text-lg'>
-                <ClaimableReward address={address} />
-              </code>
               <p className='mt-4'>
                 Your current pool token deposits:
               </p>

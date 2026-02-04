@@ -5,7 +5,7 @@ import { Alert } from '@mui/material'
 import Link from 'next/link'
 import { BigNumberish } from 'ethers'
 
-type WithdrawFunction = 'withdrawPoolTokens' | 'withdrawPoolTokensAndClaimReward'
+type WithdrawFunction = 'withdrawPoolTokens'
 
 type WithdrawButtonProps = {
   functionName: WithdrawFunction
@@ -101,9 +101,6 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
         <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
           Withdraw pool tokens
         </button>
-        <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
-          Withdraw + claim rewards
-        </button>
       </>
     )
   }
@@ -115,9 +112,6 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
         <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
           Withdraw pool tokens
         </button>
-        <button className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50" disabled>
-          Withdraw + claim rewards
-        </button>
       </>
     )
   }
@@ -125,7 +119,6 @@ export default function WithdrawPoolTokensFlow({ address }: any) {
   return (
     <>
       <WithdrawButton functionName="withdrawPoolTokens" label="Withdraw pool tokens" />
-      <WithdrawButton functionName="withdrawPoolTokensAndClaimReward" label="Withdraw + claim rewards" />
     </>
   )
 }

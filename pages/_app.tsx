@@ -8,13 +8,15 @@ import { fallback } from 'viem'
 
 const queryClient = new QueryClient();
 
-const primaryRpcUrl = process.env.NEXT_PUBLIC_RPC_URL || 'https://cloudflare-eth.com'
+const primaryRpcUrl = '/api/rpc'
+const secondaryRpcUrl = 'https://cloudflare-eth.com'
 
 const config = createConfig({
   chains: [mainnet], 
   transports: {
     [mainnet.id]: fallback([
-      http(primaryRpcUrl, { batch: true })
+      http(primaryRpcUrl, { batch: true }),
+      http(secondaryRpcUrl, { batch: true })
     ]),
   },
   connectors: [injected()]

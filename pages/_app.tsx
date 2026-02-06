@@ -4,13 +4,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider, useReadContract, http, createConfig } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import { injected } from 'wagmi/connectors'
+import { fallback } from 'viem'
 
 const queryClient = new QueryClient();
 
+const primaryRpcUrl = process.env.NEXT_PUBLIC_RPC_URL || 'https://cloudflare-eth.com'
+
 const config = createConfig({
   chains: [mainnet], 
-  transports: { 
-    [mainnet.id]: http()
+  transports: {
+    [mainnet.id]: fallback([
+      http(primaryRpcUrl, { batch: true })
+    ]),
   },
   connectors: [injected()]
 })

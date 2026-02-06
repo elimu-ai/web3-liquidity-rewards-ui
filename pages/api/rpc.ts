@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const RPC_URL = process.env.RPC_URL
+const ALLOWED_METHODS = new Set([
+  'eth_call',
+  'eth_blockNumber',
+  'eth_chainId'
+])
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -12,13 +17,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'RPC_URL is not configured' })
   }
 
+  const body = req.body
+  const requests = Array.isArray(body) ? body : [body]
+  const invalidMethod = requests.find((item) => {
+    const method = item?.method
+    return !method || !ALLOWED_METHODS.has(method)
+  })
+
+  if (!body || !requests.length) {
+    return res.status(400).json({ error: 'Invalid JSON-RPC payload' })
+  }
+
+  if (invalidMethod) {
+    const method = invalidMethod?.method || 'unknown'
+    return res.status(403).json({ error: `RPC method not allowed: ${method}` })
+  }
+
   try {
     const upstream = await fetch(RPC_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify(body)
     })
 
     const text = await upstream.text()

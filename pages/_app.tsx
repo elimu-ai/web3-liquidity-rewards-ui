@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 const config = createConfig({
   chains: [mainnet], 
   transports: { 
-    [mainnet.id]: http()
+    [mainnet.id]: http('https://ethereum-rpc.publicnode.com')
   },
   connectors: [injected()]
 })

@@ -8,6 +8,7 @@ import PoolTokenDeposits from '../components/uniswap/PoolTokenDeposits'
 import RewardDetails from '../components/uniswap/RewardDetails'
 import ClaimRewardsFlow from '../components/uniswap/ClaimRewardsFlow'
 import DepositPoolTokensFlow from '../components/uniswap/DepositPoolTokensFlow'
+import WithdrawPoolTokensFlow from '../components/uniswap/WithdrawPoolTokensFlow'
 
 export default function Uniswap() {
   console.log('Uniswap')
@@ -90,6 +91,28 @@ return (
               </code>
               <div className='mt-4'>
                 <ClaimRewardsFlow address={address} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+          <div className="bg-white mt-6 border w-96 rounded-2xl drop-shadow-md">
+            <div className='p-6'>
+              <h3 className="text-2xl font-bold">4. Withdraw Pool Tokens 📤</h3>
+              <div className='mt-4'>
+                <p>Withdraw your deposited Uniswap pool tokens.</p>
+              </div>
+            </div>
+            <div className='p-6 border-t-2 border-purple-100 bg-purple-50 rounded-b-2xl'>
+              <p>
+                Your current pool token deposits:
+              </p>
+              <code className='text-lg'>
+                <PoolTokenDeposits address={address} />
+              </code>
+              <div className='mt-4'>
+                <WithdrawPoolTokensFlow address={address} />
               </div>
             </div>
           </div>

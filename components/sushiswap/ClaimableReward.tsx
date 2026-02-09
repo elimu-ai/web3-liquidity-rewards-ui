@@ -21,7 +21,7 @@ export default function ClaimableReward({ address }: any) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else if (!address) {
         return <>Connect Wallet ☝🏽</>
-    } else if (data == undefined) {
+    } else if (isError || data == undefined) {
         return <Alert severity="error" className='mt-4 justify-center'>Error loading claimable reward</Alert>
     } else {
         const claimableReward: BigNumberish = BigInt(Number(data))

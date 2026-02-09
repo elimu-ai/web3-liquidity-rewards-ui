@@ -68,9 +68,12 @@ function PrepareClaimReward({ address }: any) {
       </>
     )
   } else {
+    const isReadyToClaim = !!simulateData?.request && !writeIsPending
+    const buttonLabel = writeIsPending ? 'Confirming...' : 'Preparing...'
+
     return (
       !writeIsSuccess ? (
-        (simulateData && !writeIsPending) ? (
+        isReadyToClaim ? (
           <button 
               id="claimButton"
               className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
@@ -86,9 +89,11 @@ function PrepareClaimReward({ address }: any) {
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
                 disabled
             >
-              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming...
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> {buttonLabel}
             </button>
-            <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
+            {writeIsPending && (
+              <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
+            )}
           </>
         )
       ) : (

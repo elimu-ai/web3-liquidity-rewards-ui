@@ -130,7 +130,7 @@ describe('ClaimRewardsFlow', () => {
 
     render(<ClaimUni address="0xabc" />)
 
-    const claimButton = screen.getByRole('button', { name: /confirming/i })
+    const claimButton = screen.getByRole('button', { name: /preparing/i })
     expect(claimButton).toBeDisabled()
     fireEvent.click(claimButton)
     expect(writeContract).not.toHaveBeenCalled()

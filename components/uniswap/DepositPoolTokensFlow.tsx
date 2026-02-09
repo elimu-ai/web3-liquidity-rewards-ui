@@ -4,7 +4,7 @@ import UniswapPoolRewards from '../../abis/UniswapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
 import Link from "next/link"
-import { BigNumberish } from "ethers"
+import { BigNumberish, ethers } from "ethers"
 import { useState } from "react"
 
 /** Render a Uniswap deposit button for the specified pool token amount. */
@@ -159,14 +159,15 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
     console.log('InputDepositAmount')
     console.log('currentAllowanceGwei:', currentAllowanceGwei)
 
-    const [allowance, setAllowance] = useState(0)
+    const [allowance, setAllowance] = useState('0')
     /** Keep allowance input value in local state. */
     const handleAllowanceChange = (event: any) => {
         console.log('handleAllowanceChange')
         setAllowance(event.target.value)
     }
     console.log('allowance:', allowance)
-    const allowanceGwei: BigNumberish = allowance * 1e18
+    const allowanceValue = allowance || '0'
+    const allowanceGwei: bigint = BigInt(ethers.utils.parseUnits(allowanceValue, 18).toString())
     console.log('allowanceGwei:', allowanceGwei)
 
     return (
@@ -178,7 +179,7 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
                 placeholder="Amount"
                 className="input font-mono text-lg w-full p-4 border border-solid border-gray-300 shadow-inner rounded-full text-center"
             />
-            {(allowanceGwei <= 0) ? (
+            {(allowanceGwei <= BigInt(0)) ? (
                 <button 
                         id="depositButton"
                         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"

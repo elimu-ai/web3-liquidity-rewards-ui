@@ -12,6 +12,7 @@ UI for the liquidity provider smart contracts.
 ```
 npm install
 npm run build
+npm run test
 npm run dev
 ```
 

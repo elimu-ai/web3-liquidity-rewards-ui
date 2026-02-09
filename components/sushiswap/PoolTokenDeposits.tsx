@@ -25,7 +25,7 @@ export default function PoolTokenDeposits({ address }: any) {
         return (
             <>Connect Wallet ☝🏽</>
         )
-    } else if (data == undefined) {
+    } else if (isError || data == undefined) {
         return (
             <Alert severity="error" className='mt-4 justify-center'>Error loading pool token deposits</Alert>
         )

@@ -5,8 +5,11 @@ import { Alert } from "@mui/material"
 import Link from "next/link"
 import { BigNumberish } from "ethers"
 
+/** Render the claim button and transaction feedback for Uniswap rewards. */
 function PrepareClaimReward({ address }: any) {
   console.log('PrepareClaimReward')
+
+  const isMounted = useIsMounted()
 
   const { data: simulateData, isError: prepareIsError, error: prepareError, isLoading: prepareIsLoading } = useSimulateContract({
     address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
@@ -33,7 +36,15 @@ function PrepareClaimReward({ address }: any) {
   console.log('waitForTransactionIsLoading:', waitForTransactionIsLoading)
   console.log('waitForTransactionIsSuccess:', waitForTransactionIsSuccess)
 
-  if (!useIsMounted() || prepareIsLoading) {
+  /** Trigger the claim write only when the simulation produced a request. */
+  const handleClick = () => {
+    if (!simulateData?.request) {
+      return
+    }
+    writeContract(simulateData.request)
+  }
+
+  if (!isMounted || prepareIsLoading) {
     return (
       <button 
           id="claimButton"
@@ -57,14 +68,17 @@ function PrepareClaimReward({ address }: any) {
       </>
     )
   } else {
+    const isReadyToClaim = !!simulateData?.request && !writeIsPending
+    const buttonLabel = writeIsPending ? 'Confirming...' : 'Preparing...'
+
     return (
       !writeIsSuccess ? (
-        (simulateData && !writeIsPending) ? (
+        isReadyToClaim ? (
           <button 
               id="claimButton"
               className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
-              disabled={!simulateData.request}
-              onClick={() => writeContract(simulateData.request)}
+              disabled={!simulateData?.request}
+              onClick={handleClick}
           >
             Claim rewards
           </button>
@@ -75,9 +89,11 @@ function PrepareClaimReward({ address }: any) {
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full p-4 disabled:opacity-50"
                 disabled
             >
-              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> Confirming...
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span> {buttonLabel}
             </button>
-            <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
+            {writeIsPending && (
+              <Alert severity="info" className="mt-4 justify-center">Check wallet</Alert>
+            )}
           </>
         )
       ) : (
@@ -109,8 +125,11 @@ function PrepareClaimReward({ address }: any) {
   }
 }
 
+/** Render the Uniswap rewards claim flow for the connected wallet. */
 export default function ClaimRewardsFlow({ address }: any) {
   console.log('ClaimRewardsFlow')
+
+  const isMounted = useIsMounted()
 
   const { data, isError, isLoading } = useReadContract({
     address: '0x6ba828e01713cef8ab59b64198d963d0e42e0aea',
@@ -122,7 +141,7 @@ export default function ClaimRewardsFlow({ address }: any) {
   console.log('isError:', isError)
   console.log('isLoading:', isLoading)
 
-  if (!useIsMounted() || isLoading) {
+  if (!isMounted || isLoading) {
     return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
   } else if (!address || (data == undefined)) {
     return (
@@ -134,7 +153,7 @@ export default function ClaimRewardsFlow({ address }: any) {
       </button>
     )
   } else {
-    const claimableReward: BigNumberish = BigInt(Number(data))
+    const claimableReward: BigNumberish = BigInt(data.toString())
     console.log('claimableReward:', claimableReward)
     if (claimableReward == BigInt(0)) {
       return (

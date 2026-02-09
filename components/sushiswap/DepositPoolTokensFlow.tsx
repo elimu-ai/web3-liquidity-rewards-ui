@@ -7,6 +7,7 @@ import Link from "next/link"
 import { BigNumberish, ethers } from "ethers"
 import { useState } from "react"
 
+/** Render a SushiSwap deposit button for the specified pool token amount. */
 function DepositButton({ amountGwei }: any) {
     console.log('DepositButton')
 
@@ -36,13 +37,21 @@ function DepositButton({ amountGwei }: any) {
     console.log('waitForTransactionIsLoading:', waitForTransactionIsLoading)
     console.log('waitForTransactionIsSuccess:', waitForTransactionIsSuccess)
 
+    /** Trigger the deposit write only when the simulation produced a request. */
+    const handleClick = () => {
+        if (!simulateData?.request) {
+            return
+        }
+        writeContract(simulateData.request)
+    }
+
     return (
         <>
             <button 
                 id="depositButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
                 disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
-                onClick={() => writeContract(simulateData!.request)}
+                onClick={handleClick}
             >
                 {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
@@ -74,6 +83,7 @@ function DepositButton({ amountGwei }: any) {
     )
 }
 
+/** Render a SushiSwap allowance approval button for the specified allowance amount. */
 function AllowanceButton({ allowanceGwei }: any) {
     console.log('AllowanceButton')
 
@@ -103,6 +113,14 @@ function AllowanceButton({ allowanceGwei }: any) {
     console.log('waitForTransactionIsLoading:', waitForTransactionIsLoading)
     console.log('waitForTransactionIsSuccess:', waitForTransactionIsSuccess)
 
+    /** Trigger the approval write only when the simulation produced a request. */
+    const handleClick = () => {
+        if (!simulateData?.request) {
+            return
+        }
+        writeContract(simulateData.request)
+    }
+
     if (waitForTransactionIsSuccess) {
         return <DepositButton amountGwei={allowanceGwei} />
     }
@@ -112,7 +130,7 @@ function AllowanceButton({ allowanceGwei }: any) {
                 id="allowanceButton"
                 className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
                 disabled={!simulateData?.request || prepareIsLoading || writeIsPending || waitForTransactionIsLoading}
-                onClick={() => writeContract(simulateData!.request)}
+                onClick={handleClick}
             >
                 {(prepareIsLoading || writeIsPending || waitForTransactionIsLoading) && (
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
@@ -136,17 +154,20 @@ function AllowanceButton({ allowanceGwei }: any) {
     )
 }
 
+/** Render the allowance input and conditionally show approval or deposit actions. */
 function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }: any) {
     console.log('InputDepositAmount')
     console.log('currentAllowanceGwei:', currentAllowanceGwei)
 
-    const [allowance, setAllowance] = useState(0)
+    const [allowance, setAllowance] = useState('0')
+    /** Keep allowance input value in local state. */
     const handleAllowanceChange = (event: any) => {
         console.log('handleAllowanceChange')
         setAllowance(event.target.value)
     }
     console.log('allowance:', allowance)
-    const allowanceGwei: BigNumberish = allowance * 1e18
+    const allowanceValue = allowance || '0'
+    const allowanceGwei: bigint = BigInt(ethers.utils.parseUnits(allowanceValue, 18).toString())
     console.log('allowanceGwei:', allowanceGwei)
 
     return (
@@ -158,7 +179,7 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
                 placeholder="Amount"
                 className="input font-mono text-lg w-full p-4 border border-solid border-gray-300 shadow-inner rounded-full text-center"
             />
-            {(allowanceGwei <= 0) ? (
+            {(allowanceGwei <= BigInt(0)) ? (
                 <button 
                         id="depositButton"
                         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
@@ -176,8 +197,11 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
     )
 }
 
+/** Load the current allowance and show the deposit input flow. */
 function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('ReadAllowance')
+
+    const isMounted = useIsMounted()
 
     // Lookup current pool token allowance
     const { data, isError, error, isLoading } = useReadContract({
@@ -191,17 +215,21 @@ function ReadAllowance({ address, poolTokenBalance }: any) {
     console.log('error:', error)
     console.log('isLoading:', isLoading)
 
-    if (!useIsMounted() || isLoading) {
+    if (!isMounted || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else {
-        const allowance: BigNumberish = BigInt(Number(data))
+        const rawAllowance = data as BigNumberish
+        const allowance: BigNumberish = BigInt(rawAllowance.toString())
         console.log('allowance:', allowance)
         return <InputDepositAmount address={address} poolTokenBalance={poolTokenBalance} currentAllowanceGwei={allowance} />
     }
 }
 
+/** Render the SushiSwap pool token deposit flow for the connected wallet. */
 export default function DepositPoolTokensFlow({ address }: any) {
     console.log('DepositPoolTokensFlow')
+
+    const isMounted = useIsMounted()
 
     // Check if the address has any pool tokens available for deposit
     const { data, isError, error, isLoading } = useReadContract({
@@ -215,7 +243,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
     console.log('error:', error)
     console.log('isLoading:', isLoading)
 
-    if (!useIsMounted() || isLoading) {
+    if (!isMounted || isLoading) {
         return <span className="inline-block h-4 w-4 animate-spin rounded-full border-8 border-purple-500 border-r-transparent"></span>
     } else if (!address || (data == undefined)) {
         return (
@@ -235,7 +263,7 @@ export default function DepositPoolTokensFlow({ address }: any) {
             </>
         )
     } else {
-        const poolTokenBalance: BigNumberish = BigInt(Number(data))
+        const poolTokenBalance: BigNumberish = BigInt(data.toString())
         console.log('poolTokenBalance:', poolTokenBalance)
         if (poolTokenBalance == BigInt(0)) {
             return (

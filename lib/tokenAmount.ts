@@ -4,6 +4,14 @@ function addThousandsSeparators(value: string): string {
   return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
+function bigIntPow(base: bigint, exponent: number): bigint {
+  let result = BigInt(1)
+  for (let i = 0; i < exponent; i++) {
+    result = result * base
+  }
+  return result
+}
+
 /**
  * Formats a token amount using truncation (round down), never rounding up.
  */
@@ -12,12 +20,12 @@ export function formatTokenAmountDownFromWei(
   tokenDecimals = 18,
   displayDecimals = 2
 ): string {
-  if (amountWei < 0n) {
-    return '0.00'
+  if (amountWei < BigInt(0)) {
+    return '0.' + '0'.repeat(displayDecimals)
   }
 
-  const base = 10n ** BigInt(tokenDecimals)
-  const scale = 10n ** BigInt(displayDecimals)
+  const base = bigIntPow(BigInt(10), tokenDecimals)
+  const scale = bigIntPow(BigInt(10), displayDecimals)
   const whole = amountWei / base
   const fraction = ((amountWei % base) * scale) / base
 
@@ -32,7 +40,7 @@ export function formatTokenAmountDownFromWei(
 export function parseTokenInputToWei(value: string, tokenDecimals = 18): bigint | null {
   const trimmed = value.trim()
   if (trimmed === '') {
-    return 0n
+    return BigInt(0)
   }
 
   if (!/^\d*\.?\d*$/.test(trimmed)) {

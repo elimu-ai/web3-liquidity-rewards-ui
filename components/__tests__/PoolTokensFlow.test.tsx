@@ -177,7 +177,7 @@ describe('DepositPoolTokensFlow', () => {
   it('does not call writeContract when allowance simulateData is missing', () => {
     const writeContract = vi.fn()
     mockUseReadContract
-      .mockImplementationOnce(() => ({ data: BigInt(1), isError: false, isLoading: false }))
+      .mockImplementationOnce(() => ({ data: BigInt('10000000000000000000'), isError: false, isLoading: false }))
       .mockImplementationOnce(() => ({ data: BigInt(0), isError: false, isLoading: false }))
     mockUseSimulateContract.mockReturnValue({ ...baseSimulateResult, data: undefined })
     mockUseWriteContract.mockReturnValue({

@@ -4,8 +4,9 @@ import SushiSwapPoolRewards from '../../abis/SushiSwapPoolRewards.json'
 import { useIsMounted } from "../../hooks/useIsMounted"
 import { Alert } from "@mui/material"
 import Link from "next/link"
-import { BigNumberish, ethers } from "ethers"
+import { BigNumberish } from "ethers"
 import { useState } from "react"
+import { formatTokenAmountDownFromWei, parseTokenInputToWei } from "../../lib/tokenAmount"
 
 /** Render a SushiSwap deposit button for the specified pool token amount. */
 function DepositButton({ amountGwei }: any) {
@@ -159,27 +160,43 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
     console.log('InputDepositAmount')
     console.log('currentAllowanceGwei:', currentAllowanceGwei)
 
-    const [allowance, setAllowance] = useState('0')
-    /** Keep allowance input value in local state. */
-    const handleAllowanceChange = (event: any) => {
-        console.log('handleAllowanceChange')
-        setAllowance(event.target.value)
+    const [amount, setAmount] = useState('')
+    /** Keep amount input value in local state. */
+    const handleAmountChange = (event: any) => {
+        console.log('handleAmountChange')
+        setAmount(event.target.value)
     }
-    console.log('allowance:', allowance)
-    const allowanceValue = allowance || '0'
-    const allowanceGwei: bigint = BigInt(ethers.utils.parseUnits(allowanceValue, 18).toString())
-    console.log('allowanceGwei:', allowanceGwei)
+    console.log('amount:', amount)
+
+    const amountGwei = parseTokenInputToWei(amount, 18)
+    const hasParseError = amount.trim() !== '' && amountGwei === null
+    const safeAmountGwei = amountGwei ?? BigInt(0)
+    const isAmountZero = safeAmountGwei <= BigInt(0)
+    const isAmountOverBalance = safeAmountGwei > poolTokenBalance
+    const isAmountInvalid = hasParseError || isAmountZero || isAmountOverBalance
+    const maxBalanceLabel = formatTokenAmountDownFromWei(BigInt(poolTokenBalance.toString()))
 
     return (
         <>
             <input
                 id="allowanceInput"
-                onChange={handleAllowanceChange}
+                onChange={handleAmountChange}
+                value={amount}
                 type="number"
                 placeholder="Amount"
                 className="input font-mono text-lg w-full p-4 border border-solid border-gray-300 shadow-inner rounded-full text-center"
             />
-            {(allowanceGwei <= BigInt(0)) ? (
+            {hasParseError && (
+                <Alert severity="error" className="mt-4 justify-center">
+                    Invalid amount format
+                </Alert>
+            )}
+            {isAmountOverBalance && (
+                <Alert severity="error" className="mt-4 justify-center">
+                    Amount cannot be greater than your maximum available balance ({maxBalanceLabel} $SLP).
+                </Alert>
+            )}
+            {isAmountInvalid ? (
                 <button 
                         id="depositButton"
                         className="bg-purple-500 hover:bg-purple-600 text-white rounded-full mt-4 p-4 disabled:opacity-50"
@@ -187,10 +204,10 @@ function InputDepositAmount({ address, poolTokenBalance, currentAllowanceGwei }:
                     Deposit $SLP pool tokens
                 </button>
             ) : (
-                (allowanceGwei > currentAllowanceGwei) ? (
-                    <AllowanceButton allowanceGwei={allowanceGwei} />
+                (safeAmountGwei > currentAllowanceGwei) ? (
+                    <AllowanceButton allowanceGwei={safeAmountGwei} />
                 ) : (
-                    <DepositButton amountGwei={allowanceGwei} />
+                    <DepositButton amountGwei={safeAmountGwei} />
                 )
             )}
         </>

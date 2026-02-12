@@ -116,7 +116,7 @@ describe('Full Flow Integration (Liquidity -> Deposit -> Claim -> Withdraw)', ()
     const fixtures = createFixtures()
     const wallet = fixtures.wallets[2]
     const state = {
-      lpBalance: BigInt(100),
+      lpBalance: BigInt('100000000000000000000'),
       staked: BigInt(0),
       allowance: BigInt(10_000_000_000_000_000_000)
     }
@@ -152,8 +152,8 @@ describe('Full Flow Integration (Liquidity -> Deposit -> Claim -> Withdraw)', ()
     fireEvent.click(depositButton)
     expect(writeContract).toHaveBeenCalledTimes(1)
 
-    state.lpBalance = BigInt(99)
-    state.staked = BigInt(1)
+    state.lpBalance = BigInt('99000000000000000000')
+    state.staked = BigInt('1000000000000000000')
 
     rerender(
       <>
@@ -170,7 +170,7 @@ describe('Full Flow Integration (Liquidity -> Deposit -> Claim -> Withdraw)', ()
     const wallet = createFixtures().wallets[3]
     const writeContract = vi.fn()
     const state = {
-      lpBalance: BigInt(100),
+      lpBalance: BigInt('100000000000000000000'),
       allowance: BigInt(10_000_000_000_000_000_000)
     }
 

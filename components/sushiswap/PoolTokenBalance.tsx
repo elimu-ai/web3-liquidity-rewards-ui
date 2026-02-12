@@ -2,7 +2,8 @@ import { useReadContract } from 'wagmi'
 import SushiSwapLPToken from '../../abis/SushiSwapLPToken.json'
 import { useIsMounted } from '../../hooks/useIsMounted'
 import { Alert } from '@mui/material'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { BigNumberish } from 'ethers'
+import { formatTokenAmountDownFromWei } from '../../lib/tokenAmount'
 
 export default function PoolTokenBalance({ address }: any) {
     console.log('PoolTokenBalance')
@@ -24,11 +25,11 @@ export default function PoolTokenBalance({ address }: any) {
     } else if (isError || data == undefined) {
         return <Alert severity="error" className='mt-4 justify-center'>Error loading pool token balance</Alert>
     } else {
-        const poolTokenBalance: BigNumberish = BigInt(Number(data))
+        const poolTokenBalance: BigNumberish = BigInt(data.toString())
         console.log('poolTokenBalance:', poolTokenBalance)
         return (
             <>
-                {Number(ethers.utils.formatUnits(poolTokenBalance)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $SLP
+                {formatTokenAmountDownFromWei(BigInt(poolTokenBalance.toString()))} $SLP
             </>
         )
     }

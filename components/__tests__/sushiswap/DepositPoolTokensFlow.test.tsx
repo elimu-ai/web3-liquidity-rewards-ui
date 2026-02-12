@@ -72,7 +72,7 @@ describe('DepositPoolTokensFlow (SushiSwap)', () => {
 
     mockUseReadContract.mockImplementation(({ functionName }: any) => {
       if (functionName === 'balanceOf') {
-        return { data: BigInt(100), isError: false, isLoading: false }
+        return { data: BigInt('100000000000000000000'), isError: false, isLoading: false }
       }
       if (functionName === 'allowance') {
         return { data: BigInt(0), isError: false, isLoading: false }
@@ -95,7 +95,7 @@ describe('DepositPoolTokensFlow (SushiSwap)', () => {
     const writeContract = vi.fn()
     mockUseReadContract.mockImplementation(({ functionName }: any) => {
       if (functionName === 'balanceOf') {
-        return { data: BigInt(100), isError: false, isLoading: false }
+        return { data: BigInt('100000000000000000000'), isError: false, isLoading: false }
       }
       if (functionName === 'allowance') {
         return { data: BigInt(10_000_000_000_000_000_000), isError: false, isLoading: false }
@@ -119,7 +119,7 @@ describe('DepositPoolTokensFlow (SushiSwap)', () => {
     const writeContract = vi.fn()
     mockUseReadContract.mockImplementation(({ functionName }: any) => {
       if (functionName === 'balanceOf') {
-        return { data: BigInt(100), isError: false, isLoading: false }
+        return { data: BigInt('100000000000000000000'), isError: false, isLoading: false }
       }
       if (functionName === 'allowance') {
         return { data: BigInt(10_000_000_000_000_000_000), isError: false, isLoading: false }
@@ -144,5 +144,28 @@ describe('DepositPoolTokensFlow (SushiSwap)', () => {
     expect(pendingButton).toBeDisabled()
     fireEvent.click(pendingButton)
     expect(writeContract).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows an error and disables deposit when amount is above available balance', () => {
+    mockUseReadContract.mockImplementation(({ functionName }: any) => {
+      if (functionName === 'balanceOf') {
+        return { data: BigInt(1_000_000_000_000_000_000), isError: false, isLoading: false }
+      }
+      if (functionName === 'allowance') {
+        return { data: BigInt(10_000_000_000_000_000_000), isError: false, isLoading: false }
+      }
+      return { data: undefined, isError: false, isLoading: false }
+    })
+    mockUseSimulateContract.mockReturnValue(baseSimulate)
+    mockUseWriteContract.mockReturnValue(baseWrite)
+
+    render(<DepositPoolTokensFlow address="0xabc" />)
+
+    const input = screen.getByPlaceholderText(/amount/i)
+    fireEvent.change(input, { target: { value: '2' } })
+
+    expect(screen.getByText(/amount cannot be greater than your maximum available balance/i)).toBeInTheDocument()
+    const depositButton = screen.getByRole('button', { name: /deposit \$slp pool tokens/i })
+    expect(depositButton).toBeDisabled()
   })
 })

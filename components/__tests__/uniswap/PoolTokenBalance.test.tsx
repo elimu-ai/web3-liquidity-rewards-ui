@@ -64,4 +64,13 @@ describe('PoolTokenBalance (Uniswap)', () => {
     render(<PoolTokenBalance address={wallet.address} />)
     expect(screen.getByText(/\$UNI-V2/i)).toBeInTheDocument()
   })
+
+  it('truncates displayed balance instead of rounding up', () => {
+    mockUseIsMounted.mockReturnValue(true)
+    mockUseReadContract.mockReturnValue({ data: BigInt('53638000000000000000'), isError: false, isLoading: false })
+
+    render(<PoolTokenBalance address="0xabc" />)
+    expect(screen.getByText(/53\.63 \$UNI-V2/i)).toBeInTheDocument()
+    expect(screen.queryByText(/53\.64 \$UNI-V2/i)).not.toBeInTheDocument()
+  })
 })

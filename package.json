@@ -21,7 +21,7 @@
     "next": "^13.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "viem": "^2.25.0",
+    "viem": "^2.48.4",
     "wagmi": "^2.14.16",
     "web3-liquidity-rewards-ui": "file:"
   },

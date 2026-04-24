@@ -22,7 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "viem": "^2.25.0",
-    "wagmi": "^2.14.16",
+    "wagmi": "^3.6.4",
     "web3-liquidity-rewards-ui": "file:"
   },
   "devDependencies": {

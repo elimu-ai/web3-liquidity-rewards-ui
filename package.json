@@ -18,7 +18,7 @@
     "eslint": "^8.24.0",
     "eslint-config-next": "^12.2.5",
     "ethers": "^5.8.0",
-    "next": "^13.4.5",
+    "next": "^16.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "viem": "^2.25.0",

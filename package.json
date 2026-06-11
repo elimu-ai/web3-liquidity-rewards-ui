@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.0.0",
     "@netlify/plugin-nextjs": "^5.15.11",
-    "@tanstack/react-query": "^5.100.6",
+    "@tanstack/react-query": "^5.101.0",
     "eslint": "^8.24.0",
     "eslint-config-next": "^12.2.5",
     "ethers": "^5.8.0",

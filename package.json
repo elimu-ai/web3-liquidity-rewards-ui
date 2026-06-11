@@ -16,7 +16,7 @@
     "@netlify/plugin-nextjs": "^5.15.11",
     "@tanstack/react-query": "^5.100.6",
     "eslint": "^8.24.0",
-    "eslint-config-next": "^12.2.5",
+    "eslint-config-next": "^16.2.9",
     "ethers": "^5.8.0",
     "next": "^13.4.5",
     "react": "^18.2.0",
